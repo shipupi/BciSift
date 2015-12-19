@@ -15,7 +15,9 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    bcisift.cpp \
+    eegimage.cpp
 
 INCLUDEPATH += D:\opencv\build\include\
 
@@ -26,3 +28,6 @@ LIBS += -LD:\opencv\build\x86\vc11\lib \
 -lopencv_features2d249d \
 -lopencv_calib3d249d \
 -lopencv_nonfree249d
+
+HEADERS += \
+    eegimage.h

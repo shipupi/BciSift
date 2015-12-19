@@ -52,25 +52,39 @@ int main(int argc, char *argv[])
     }
 
 
-       //for(;;)
-       //{
-       //    eegimage(0,randInt2(50-3,50+3)-50);
-       //}
+       for(;;)
+       {
+           eegimage(0,randInt2(50-3,50+3)-50);
+       }
 
+       int fileid = 1;
 
        std::string c;
-       std::ifstream infile("C:\\Users\\rramele\\Desktop\\Data\\Rodrigo\\eeg_EyesClosed_1.dat");
-       int field=0;
-       while (infile >> c)
-       {
-           std::cout << c << std::endl;
-//           eegimage(0,randInt2(50-3,50+3)-50);
 
-           if ((field % 22)==7)
+       char filename[256];
+
+       sprintf(filename,"C:\\Users\\rramele\\Desktop\\Data\\Rodrigo\\Baseline\\e.%d.l.1.dat", fileid);
+       std::ifstream infile(filename);
+
+       infile >> c;
+
+       int field=0;
+       while (fileid<100)
+       {
+           //std::cout << c << std::endl;
+           //eegimage(0,randInt2(50-3,50+3)-50);
+
+           if ((field % 22)==2)
            {
-            eegimage(1612.0F, std::stod(c));
+                std::cout << c << std::endl;
+                eegimage(4320.0F, std::stod(c));
            }
            field++;
+           if (!(infile >> c))
+           {
+               sprintf(filename,"C:\\Users\\rramele\\Desktop\\Data\\Rodrigo\\Baseline\\e.%d.l.1.dat", fileid++);
+               infile = std::ifstream(filename);
+           }
        }
        infile.close();
 

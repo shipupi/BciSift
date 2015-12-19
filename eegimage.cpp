@@ -150,7 +150,7 @@ int eegiamage(double avg, double data)
     cv::line(image, pt1, pt2,color);
 
 
-    int key = cv::waitKey(1);
+    int key = cv::waitKey(3000);
 
     switch (key)
     {
