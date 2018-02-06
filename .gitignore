@@ -1,0 +1,7 @@
+*.o
+.qmake.stash
+debug/*.o
+debug/.qmake.stash
+BciSift.pro.user.*
+BciSift
+debug/BciSift

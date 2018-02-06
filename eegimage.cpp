@@ -1,12 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <opencv2\core\core.hpp>
-#include <opencv2\highgui\highgui.hpp>
-#include <opencv2\imgproc\imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
-#include <opencv2\nonfree\features2d.hpp>
-#include <opencv2\nonfree\nonfree.hpp>
+#include <opencv2/features2d/features2d.hpp>
 
 #include <QGlobal.h>
 #include <QTime>
@@ -212,7 +211,7 @@ int eegiamage(double avg, double data)
     {
         result r;
 
-        cv::imwrite("base.png", image);
+        //cv::imwrite("base.png", image);
 
         /**
         switch (option)

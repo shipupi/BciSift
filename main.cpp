@@ -15,7 +15,7 @@ int randInt2(int low, int high)
     return qrand() % ((high + 1) - low) + low;
 }
 
-int main(int argc, char *argv[])
+int madin(int argc, char *argv[])
 {
     //std::string imagename = "HappyFish.jpg";
     //cv::Mat image = cv::imread(imagename,CV_LOAD_IMAGE_COLOR);
@@ -36,13 +36,13 @@ int main(int argc, char *argv[])
 
     if (argc>1)
     {
-        if (_strcmpi(argv[1],"sift")==0)
+        if (strcmp(argv[1],"sift")==0)
             option = 1;
-        else if (_strcmpi(argv[1],"surf")==0)
+        else if (strcmp(argv[1],"surf")==0)
             option = 2;
-        else if (_strcmpi(argv[1],"fast")==0)
+        else if (strcmp(argv[1],"fast")==0)
             option = 3;
-        else if (_strcmpi(argv[1],"handmade")==0)
+        else if (strcmp(argv[1],"handmade")==0)
             option = 4;
     }
     else
