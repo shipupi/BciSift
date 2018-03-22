@@ -21,10 +21,14 @@ SOURCES += main.cpp \
     bcisift.cpp \
     eegimage.cpp \
     scalespace.cpp \
-    plotprocessing.cpp
+    plotprocessing.cpp \
+    dsp.cpp \
+    lsl.cpp
 
 #INCLUDEPATH += D:\opencv\build\include\
 INCLUDEPATH += /usr/local/include/
+INCLUDEPATH += /Users/rramele/work/kfr/include
+INCLUDEPATH += /Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/include
 
 #LIBS += -LD:\opencv\build\x86\vc11\lib \
 #-lopencv_core249d \
@@ -34,7 +38,7 @@ INCLUDEPATH += /usr/local/include/
 #-lopencv_calib3d249d \
 #-lopencv_nonfree249d
 
-LIBS += -L/usr/local/lib \
+LIBS += -L/usr/local/lib -L/Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/lib \
 -lopencv_core \
 -lopencv_highgui \
 -lopencv_imgproc \
@@ -42,10 +46,14 @@ LIBS += -L/usr/local/lib \
 -lopencv_xfeatures2d \
 -lopencv_calib3d \
 -lopencv_imgcodecs \
--lopencv_ml
+-lopencv_ml \
+-lopencv_flann \
+-llsl64
 
 
 
 HEADERS += \
     eegimage.h \
-    plotprocessing.h
+    plotprocessing.h \
+    dsp.h \
+    lsl.h

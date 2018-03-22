@@ -15,7 +15,7 @@ CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefau
 DEFINES       = -DQT_QML_DEBUG -DQT_CORE_LIB
 CFLAGS        = -pipe -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.9 $(EXPORT_QMAKE_XARCH_CFLAGS) -g -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.9 $(EXPORT_QMAKE_XARCH_CFLAGS) -g -std=gnu++11 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I. -I/usr/local/include -I../../Qt/5.8/clang_64/lib/QtCore.framework/Headers -I. -I../../Qt/5.8/clang_64/mkspecs/macx-clang -F/Users/rramele/Qt/5.8/clang_64/lib
+INCPATH       = -I. -I/usr/local/include -I../kfr/include -I../labstreaminglayer/build/install/lsl_Release/LSL/include -I../../Qt/5.8/clang_64/lib/QtCore.framework/Headers -I. -I../../Qt/5.8/clang_64/mkspecs/macx-clang -F/Users/rramele/Qt/5.8/clang_64/lib
 QMAKE         = /Users/rramele/Qt/5.8/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = BciSift1.0.0
 DISTDIR = /Users/rramele/work/BciSift/.tmp/BciSift1.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -headerpad_max_install_names -stdlib=libc++ -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.9 $(EXPORT_QMAKE_XARCH_LFLAGS) -Wl,-rpath,/Users/rramele/Qt/5.8/clang_64/lib
-LIBS          = $(SUBLIBS) -F/Users/rramele/Qt/5.8/clang_64/lib -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_features2d -lopencv_xfeatures2d -lopencv_calib3d -lopencv_imgcodecs -lopencv_ml -framework QtCore -framework DiskArbitration -framework IOKit 
+LIBS          = $(SUBLIBS) -F/Users/rramele/Qt/5.8/clang_64/lib -L/usr/local/lib -L/Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_features2d -lopencv_xfeatures2d -lopencv_calib3d -lopencv_imgcodecs -lopencv_ml -lopencv_flann -llsl64 -framework QtCore -framework DiskArbitration -framework IOKit 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
 SED           = sed
@@ -51,11 +51,15 @@ OBJECTS_DIR   = ./
 SOURCES       = main.cpp \
 		eegimage.cpp \
 		scalespace.cpp \
-		plotprocessing.cpp 
+		plotprocessing.cpp \
+		dsp.cpp \
+		lsl.cpp 
 OBJECTS       = main.o \
 		eegimage.o \
 		scalespace.o \
-		plotprocessing.o
+		plotprocessing.o \
+		dsp.o \
+		lsl.o
 DIST          = ../../Qt/5.8/clang_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.8/clang_64/mkspecs/qdevice.pri \
 		../../Qt/5.8/clang_64/mkspecs/features/device_config.prf \
@@ -208,10 +212,14 @@ DIST          = ../../Qt/5.8/clang_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.8/clang_64/mkspecs/features/yacc.prf \
 		../../Qt/5.8/clang_64/mkspecs/features/lex.prf \
 		BciSift.pro eegimage.h \
-		plotprocessing.h main.cpp \
+		plotprocessing.h \
+		dsp.h \
+		lsl.h main.cpp \
 		eegimage.cpp \
 		scalespace.cpp \
-		plotprocessing.cpp
+		plotprocessing.cpp \
+		dsp.cpp \
+		lsl.cpp
 QMAKE_TARGET  = BciSift
 DESTDIR       = 
 TARGET        = BciSift
@@ -545,8 +553,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Qt/5.8/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents eegimage.h plotprocessing.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp eegimage.cpp scalespace.cpp plotprocessing.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents eegimage.h plotprocessing.h dsp.h lsl.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp eegimage.cpp scalespace.cpp plotprocessing.cpp dsp.cpp lsl.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -648,7 +656,9 @@ eegimage.o: eegimage.cpp /usr/local/include/opencv2/core/core.hpp \
 		bcisift.cpp \
 		/usr/local/include/opencv2/xfeatures2d.hpp \
 		/usr/local/include/opencv2/xfeatures2d/nonfree.hpp \
-		plotprocessing.h
+		plotprocessing.h \
+		dsp.h \
+		lsl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eegimage.o eegimage.cpp
 
 scalespace.o: scalespace.cpp /usr/local/include/opencv2/core/core.hpp \
@@ -749,6 +759,106 @@ plotprocessing.o: plotprocessing.cpp /usr/local/include/opencv2/core/core.hpp \
 		../../Qt/5.8/clang_64/lib/QtCore.framework/Headers/QTime \
 		../../Qt/5.8/clang_64/lib/QtCore.framework/Headers/qdatetime.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o plotprocessing.o plotprocessing.cpp
+
+dsp.o: dsp.cpp ../kfr/include/kfr/base.hpp \
+		../kfr/include/kfr/base/abs.hpp \
+		../kfr/include/kfr/base/function.hpp \
+		../kfr/include/kfr/base/expression.hpp \
+		../kfr/include/kfr/base/platform.hpp \
+		../kfr/include/kfr/base/types.hpp \
+		../kfr/include/kfr/base/kfr.h \
+		../kfr/include/kfr/cident.h \
+		../kfr/include/kfr/base/intrinsics.h \
+		../kfr/include/kfr/testo/testo.hpp \
+		../kfr/include/kfr/testo/comparison.hpp \
+		../kfr/include/kfr/cometa/tuple.hpp \
+		../kfr/include/kfr/cometa.hpp \
+		../kfr/include/kfr/cometa/range.hpp \
+		../kfr/include/kfr/cometa/string.hpp \
+		../kfr/include/kfr/cometa/cstring.hpp \
+		../kfr/include/kfr/cometa/ctti.hpp \
+		../kfr/include/kfr/cometa/named_arg.hpp \
+		../kfr/include/kfr/ext/console_colors.hpp \
+		../kfr/include/kfr/base/vec.hpp \
+		../kfr/include/kfr/base/constants.hpp \
+		../kfr/include/kfr/base/simd_clang.hpp \
+		../kfr/include/kfr/base/simd_intrin.hpp \
+		../kfr/include/kfr/base/simd_x86.hpp \
+		../kfr/include/kfr/base/shuffle.hpp \
+		../kfr/include/kfr/base/specializations.i \
+		../kfr/include/kfr/base/operators.hpp \
+		../kfr/include/kfr/base/bitwise.hpp \
+		../kfr/include/kfr/base/select.hpp \
+		../kfr/include/kfr/base/asin_acos.hpp \
+		../kfr/include/kfr/base/atan.hpp \
+		../kfr/include/kfr/base/sin_cos.hpp \
+		../kfr/include/kfr/base/min_max.hpp \
+		../kfr/include/kfr/base/round.hpp \
+		../kfr/include/kfr/base/sqrt.hpp \
+		../kfr/include/kfr/base/basic_expressions.hpp \
+		../kfr/include/kfr/base/univector.hpp \
+		../kfr/include/kfr/cometa/array.hpp \
+		../kfr/include/kfr/base/memory.hpp \
+		../kfr/include/kfr/base/read_write.hpp \
+		../kfr/include/kfr/base/clamp.hpp \
+		../kfr/include/kfr/base/comparison.hpp \
+		../kfr/include/kfr/base/compiletime.hpp \
+		../kfr/include/kfr/base/complex.hpp \
+		../kfr/include/kfr/base/hyperbolic.hpp \
+		../kfr/include/kfr/base/log_exp.hpp \
+		../kfr/include/kfr/base/digitreverse.hpp \
+		../kfr/include/kfr/base/filter.hpp \
+		../kfr/include/kfr/base/pointer.hpp \
+		../kfr/include/kfr/base/gamma.hpp \
+		../kfr/include/kfr/base/generators.hpp \
+		../kfr/include/kfr/base/horizontal.hpp \
+		../kfr/include/kfr/base/logical.hpp \
+		../kfr/include/kfr/base/modzerobessel.hpp \
+		../kfr/include/kfr/base/random.hpp \
+		../kfr/include/kfr/base/reduce.hpp \
+		../kfr/include/kfr/base/saturation.hpp \
+		../kfr/include/kfr/base/small_buffer.hpp \
+		../kfr/include/kfr/base/sort.hpp \
+		../kfr/include/kfr/base/tan.hpp \
+		../kfr/include/kfr/version.hpp \
+		../kfr/include/kfr/dft.hpp \
+		../kfr/include/kfr/dft/bitrev.hpp \
+		../kfr/include/kfr/data/bitrev.hpp \
+		../kfr/include/kfr/dft/ft.hpp \
+		../kfr/include/kfr/data/sincos.hpp \
+		../kfr/include/kfr/dft/convolution.hpp \
+		../kfr/include/kfr/dft/cache.hpp \
+		../kfr/include/kfr/dft/fft.hpp \
+		../kfr/include/kfr/dft/reference_dft.hpp \
+		../kfr/include/kfr/dsp.hpp \
+		../kfr/include/kfr/dsp/biquad.hpp \
+		../kfr/include/kfr/dsp/biquad_design.hpp \
+		../kfr/include/kfr/dsp/dcremove.hpp \
+		../kfr/include/kfr/dsp/delay.hpp \
+		../kfr/include/kfr/dsp/fir.hpp \
+		../kfr/include/kfr/dsp/fir_design.hpp \
+		../kfr/include/kfr/dsp/fracdelay.hpp \
+		../kfr/include/kfr/dsp/goertzel.hpp \
+		../kfr/include/kfr/dsp/interpolation.hpp \
+		../kfr/include/kfr/dsp/mixdown.hpp \
+		../kfr/include/kfr/dsp/oscillators.hpp \
+		../kfr/include/kfr/dsp/sample_rate_conversion.hpp \
+		../kfr/include/kfr/dsp/window.hpp \
+		../kfr/include/kfr/dsp/speaker.hpp \
+		../kfr/include/kfr/dsp/special.hpp \
+		../kfr/include/kfr/dsp/units.hpp \
+		../kfr/include/kfr/dsp/waveshaper.hpp \
+		../kfr/include/kfr/dsp/weighting.hpp \
+		../kfr/include/kfr/io.hpp \
+		../kfr/include/kfr/io/audiofile.hpp \
+		../kfr/include/kfr/io/file.hpp \
+		../kfr/include/kfr/io/python_plot.hpp \
+		../kfr/include/kfr/io/tostring.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dsp.o dsp.cpp
+
+lsl.o: lsl.cpp ../labstreaminglayer/build/install/lsl_Release/LSL/include/lsl_cpp.h \
+		../labstreaminglayer/build/install/lsl_Release/LSL/include/lsl_c.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lsl.o lsl.cpp
 
 ####### Install
 

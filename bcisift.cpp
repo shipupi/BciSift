@@ -15,6 +15,9 @@
 #include <QTime>
 
 #include "plotprocessing.h"
+#include "dsp.h"
+
+#include "lsl.h"
 
 int randInt(int low, int high)
     {
@@ -465,118 +468,16 @@ int showLine(std::string imagename)
 
 int main( int argc, char **argv)
 {
-    cv::Mat src1, src_gray;
-    cv::Mat grad;
-    char* window_name = "Sift Processor";
-    int scale = 1;
-    int delta = 0;
-    int ddepth = CV_16S;
-    int imageheight=100, imagewidth=100;
+    //comparesignals(1,31,2,1,1,231,2,1);
+    //comparehits();
+    //process();
+    //testdsp();
 
-    std::vector<cv::KeyPoint> keypoints1;
+    if (strcmp(argv[1],"send")==0)
+        sending();
+    else
+        receiving();
 
-    int c;
-    char filename[256];
-
-    /// Load an image
-    sprintf(filename,"/Users/rramele/Data/Plots/s.1.e.31.l.2.c.1.tif");
-    //infile = std::ifstream(filename);
-    src1 = cv::imread( filename );
-
-    if( !src1.data )
-    { return -1; }
-
-    cv::Mat featureImage1(src1.size().height,src1.size().width,CV_8U,cv::Scalar(0));
-
-
-    /**
-    https://docs.opencv.org/3.2.0/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
-    static Ptr<SIFT> cv::xfeatures2d::SIFT::create	(	int 	nfeatures = 0,
-    int 	nOctaveLayers = 3,
-    double 	contrastThreshold = 0.04,
-    double 	edgeThreshold = 10,
-    double 	sigma = 1.6
-    )	**/
-
-
-    cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create(0,70,0.04,2,1.6);
-
-    //cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create();
-
-    detector->detect( src1, keypoints1);
-    cv::drawKeypoints( src1,
-                       keypoints1,
-                       featureImage1,
-                       cv::Scalar(255,255,255),
-                       cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-    cv::imshow("Template", featureImage1);
-
-    cv::waitKey(0);
-
-
-    sprintf(filename,"/Users/rramele/Data/Plots/s.1.e.231.l.2.c.1.tif");
-    cv::Mat src2 = cv::imread( filename );
-    cv::imshow("Query", src2);
-
-    cv::waitKey(0);
-
-    std::vector<cv::KeyPoint> keypoints2;
-
-    cv::Mat descriptors1, descriptors2;
-
-    detector->detect( src2, keypoints2);
-
-
-    detector->compute(src1,keypoints1,descriptors1);
-    detector->compute(src2,keypoints2,descriptors2);
-
-    printf("Size: %d, %d\n", descriptors1.size().width, descriptors1.size().height);
-    printf("Size: %d, %d\n", descriptors2.size().width, descriptors2.size().height);
-
-
-    std::vector<cv::DMatch> matches;
-
-    cv::BFMatcher bf = cv::BFMatcher(cv::NORM_L2);
-
-    bf.match(descriptors1,descriptors2, matches);
-
-    cv::Mat matchimg;
-
-    cv::drawMatches(src1,keypoints1,src2,keypoints2,matches,matchimg);
-
-    cv::imshow("Query", matchimg);
-    cv::waitKey(0);
-
-    std::vector<int> compression_params;
-    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-    compression_params.push_back(9);
-
-    try {
-        cv::imwrite("matching.png", matchimg, compression_params);
-    }
-    catch (std::runtime_error& ex) {
-        fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
-        return 1;
-    }
-
-
-
-
-    /**     1 # create BFMatcher object
-         2 bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-         3
-         4 # Match descriptors.
-         5 matches = bf.match(des1,des2)
-         6
-         7 # Sort them in the order of their distance.
-         8 matches = sorted(matches, key = lambda x:x.distance)
-         9
-        10 # Draw first 10 matches.
-        11 img3 = cv2.drawMatches(img1,kp1,img2,kp2,matches[:10], flags=2)
-        **/
-
-    process();
 
     return 0;
 }

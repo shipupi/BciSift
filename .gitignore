@@ -5,3 +5,6 @@ debug/.qmake.stash
 BciSift.pro.user.*
 BciSift
 debug/BciSift
+matching*.png
+Plots/*.tiff
+*.mat
