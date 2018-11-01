@@ -131,7 +131,8 @@ int main( int argc, char **argv)
     {
         for(;;)
         {
-            eegimage(0,randInt2(50-30,50+30)-50);
+            eegimage(0,randInt2(50-6,50+6)-50);
+            //eegimage(0,0);
         }
     }
 

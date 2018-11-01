@@ -88,6 +88,64 @@ void cvWaitKeyWrapper()
     }
 }
 
+void calculate_descriptors(cv::Mat image)
+{
+    VlSiftFilt        *filt ;
+    std::vector<float> img;
+    for (int i = 0; i < image.rows; ++i)
+      for (int j = 0; j < image.cols; ++j)
+        img.push_back(image.at<unsigned char>(i, j));
+
+    setverbose(10);
+
+    filt = vl_sift_new (imagewidth, imageheight, 1, 3, 0) ; // M is width
+    //vl_dsift_process(filter, &img[0]);
+
+    int err   = vl_sift_process_first_octave (filt, (const vl_sift_pix *)&img[0]) ;
+    if (err) return ;
+
+
+    vl_sift_pix  buf [128] ;
+    vl_sift_pix rbuf [128] ;
+    double                angles [4] ;
+    int                   nangles ;
+    VlSiftKeypoint        ik ;
+    VlSiftKeypoint        *k ;
+    double            *ikeys = 0 ;
+    bool floatDescriptors = true;
+    double descr[128];
+
+    vl_sift_keypoint_init (filt, &ik,
+                           imagewidth/2-1,
+                           imageheight/2 - 1,
+                           1) ;
+    ik.sigmax = 1;
+    ik.sigmay = 1;
+
+    k = &ik ;
+
+    angles [0] = VL_PI / 2 - 0 ; // 0 is the angle
+    nangles    = 1 ;
+
+    printf("Descriptors\n");
+    vl_sift_calc_keypoint_descriptor (filt, buf, k, angles[0]) ;
+    transpose_descriptor (rbuf, buf) ;
+
+    if (! floatDescriptors) {
+        for (int j = 0 ; j < 128 ; ++j) {
+          float x = 512.0F * rbuf [j] ;
+          x = (x < 255.0F) ? x : 255.0F ;
+          ((vl_uint8*)descr) [128 * 1 + j] = (vl_uint8) x ;
+        }
+    } else {
+        for (int j = 0 ; j < 128 ; ++j) {
+          float x = 512.0F * rbuf [j] ;
+          ((float*)descr) [128 * 1 + j] = x ;
+        }
+    }
+
+}
+
 int eegimage(double avg, double data)
 {
     // 1 La imagen queda igual
@@ -133,36 +191,7 @@ int eegimage(double avg, double data)
         std::cout << "-------------" << std::endl;
 
 
-
-        VlSiftFilt        *filt ;
-        std::vector<float> img;
-        for (int i = 0; i < image.rows; ++i)
-          for (int j = 0; j < image.cols; ++j)
-            img.push_back(image.at<unsigned char>(i, j));
-
-        filt = vl_sift_new (imagewidth, imageheight, 0, 1, 0) ; // M is width
-        //vl_dsift_process(filter, &img[0]);
-
-        vl_sift_pix  buf [128] ;
-        vl_sift_pix rbuf [128] ;
-        double                angles [4] ;
-        int                   nangles ;
-        VlSiftKeypoint        ik ;
-        VlSiftKeypoint        *k ;
-        double            *ikeys = 0 ;
-
-        vl_sift_keypoint_init (filt, &ik,
-                               128-1,
-                               120 - 1,
-                               1) ;
-        ik.sigmax = 1;
-        ik.sigmay = 1;
-
-        angles [0] = VL_PI / 2 - 0 ; // 0 is the angle
-        nangles    = 1 ;
-
-        vl_sift_calc_keypoint_descriptor (filt, buf, k, angles [0]) ;
-        transpose_descriptor (rbuf, buf) ;
+        calculate_descriptors(image);
 
 
         cv::Mat image2(imageheight,imagewidth,CV_8U,cv::Scalar(0));
