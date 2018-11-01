@@ -466,24 +466,6 @@ int showLine(std::string imagename)
 
 }
 
-int main( int argc, char **argv)
-{
-    //comparesignals(1,31,2,1,1,231,2,1);
-    //comparehits();
-    //process();
-    //testdsp();
-
-    if (strcmp(argv[1],"send")==0)
-        sending();
-    else
-        receiving();
-
-
-    return 0;
-}
-
-
-
 /** @function main */
 int mai2n( int argc, char** argv )
 {
@@ -534,6 +516,8 @@ int mai2n( int argc, char** argv )
 
   return 0;
   }
+
+
 
 int madsin(int argc, char *argv[])
 {

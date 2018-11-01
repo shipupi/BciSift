@@ -6,6 +6,8 @@
 #include <QTime>
 
 #include "eegimage.h"
+#include "lsl.h"
+
 
 int  eeglogger(char *filename, char *subject, int duration);
 
@@ -95,4 +97,46 @@ int madin(int argc, char *argv[])
 
 }
 
+
+
+
+
+
+
+
+/**
+ * @brief main
+ * @param argc
+ * @param argv
+ * @return
+ * export LD_LIBRARY_PATH=/Users/user/work/labstreaminglayer/build/install/lsl_Release/LSL/lib/
+ * LD_LIBRARY_PATH=/Users/rramele/work/labstreaminglayer/build/install/LSL/lib
+ */
+int main( int argc, char **argv)
+{
+    //comparesignals(1,31,2,1,1,231,2,1);
+    //comparehits();
+    //process();
+    //testdsp();
+
+    if (strcmp(argv[1],"send")==0)
+    {
+        sendeegandmarkers();
+    }
+    else if (strcmp(argv[1],"recv")==0)
+    {
+        receiving();
+    }
+    else if (strcmp(argv[1],"rand")==0)
+    {
+        for(;;)
+        {
+            eegimage(0,randInt2(50-30,50+30)-50);
+        }
+    }
+
+
+
+    return 0;
+}
 

@@ -12,6 +12,9 @@ TARGET = BciSift
 CONFIG   += console
 CONFIG   -= app_bundle
 
+# Evita los errores de auto header en las cabeceras tipo c++11
+CONFIG += c++14
+
 TEMPLATE = app
 
 QMAKE_MAC_SDK = macosx10.11
@@ -23,12 +26,16 @@ SOURCES += main.cpp \
     scalespace.cpp \
     plotprocessing.cpp \
     dsp.cpp \
-    lsl.cpp
+    lsl.cpp \
+    lsltransmitter.cpp
 
 #INCLUDEPATH += D:\opencv\build\include\
+
+INCLUDEPATH += /Users/rramele/work/opencv/include/
 INCLUDEPATH += /usr/local/include/
 INCLUDEPATH += /Users/rramele/work/kfr/include
-INCLUDEPATH += /Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/include
+INCLUDEPATH += /Users/rramele/work/labstreaminglayer/build/install/LSL/include/
+INCLUDEPATH += /Users/rramele/work/vlfeat/
 
 #LIBS += -LD:\opencv\build\x86\vc11\lib \
 #-lopencv_core249d \
@@ -38,7 +45,7 @@ INCLUDEPATH += /Users/rramele/work/labstreaminglayer/build/install/lsl_Release/L
 #-lopencv_calib3d249d \
 #-lopencv_nonfree249d
 
-LIBS += -L/usr/local/lib -L/Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/lib \
+LIBS += -L/usr/local/lib -L/Users/rramele/work/labstreaminglayer/build/install/LSL/lib/ -L/Users/rramele/work/vlfeat/bin/maci64/ \
 -lopencv_core \
 -lopencv_highgui \
 -lopencv_imgproc \
@@ -48,7 +55,8 @@ LIBS += -L/usr/local/lib -L/Users/rramele/work/labstreaminglayer/build/install/l
 -lopencv_imgcodecs \
 -lopencv_ml \
 -lopencv_flann \
--llsl64
+-llsl64 \
+-lvl
 
 
 

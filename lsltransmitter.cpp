@@ -1,35 +1,44 @@
 #include <lsl_cpp.h>
 #include <stdlib.h>
+
+#include "eegimage.h"
+
 using namespace lsl;
 
 /**
- * This is an example of how a simple data stream can be offered on the network.
- * Here, the stream is named SimpleStream, has content-type EEG, and 128 channels.
- * The transmitted samples contain random numbers (and the sampling rate is irregular
- * and effectively bounded by the speed at which the program can push out samples).
+ * This code simulates the sending of lsl EEG stream with markers.
+ * *
+ * /
  */
 
-int sending() {
+
+int sendeegandmarkers() {
 
     // make a new stream_info (128ch) and open an outlet with it
-    stream_info info("SimpleStream","EEG",128);
+    stream_info info("openvibeSignal","EEG",11);
     stream_outlet outlet(info);
 
     // send data forever
-    float sample[128];
+
+    float forwardsample[11];
+
     while(true) {
+        double ts = 1.12;
+
+        forwardsample[0] = ts;
+
         // generate random data
-        for (int c=0;c<128;c++)
-            sample[c] = (rand()%1500)/500.0-1.5;
+        for (int c=0;c<11;c++)
+            forwardsample[c] = (rand()%1500)/500.0-1.5;
+
+        printf ("%10.8f:%10.8f\n",ts,forwardsample[0]);
+
         // send it
-        outlet.push_sample(sample);
+        outlet.push_sample(forwardsample);
     }
 
     return 0;
 }
-
-
-
 
 /**
  * This is a minimal example that demonstrates how a multi-channel stream (here 128ch)
@@ -39,28 +48,22 @@ int sending() {
  * export LD_LIBRARY_PATH=/Users/rramele/work/labstreaminglayer/build/install/lsl_Release/LSL/lib/
  */
 
-int receivingfull() {
+int receiving() {
     using namespace lsl;
 
     // resolve the stream of interest & make an inlet to get data from the first result
-    std::vector<stream_info> markers = resolve_stream("name","openvibeMarkers");
-    stream_inlet markersInlet(markers[0]);
-
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal");
     stream_inlet inlet(results[0]);
 
     // receive data & time stamps forever (not displaying them here)
-    float sample[8];
+    float sample[11];
     float marker;
     while (true)
     {
-        double ts = inlet.pull_sample(&sample[0],8);
-        //printf ("%10.8f:%10.8f\n",ts,sample[0]);
+        double ts = inlet.pull_sample(&sample[0],11);
+        printf ("%10.8f:%10.8f\n",ts,sample[0]);
 
-
-        double mts = markersInlet.pull_sample(&marker,1,0.0f);
-        if (mts>0)
-            printf ("%10.8f:Marker %10.8f\n",mts,marker);
+        eegimage(0,sample[0]*10);
     }
 
     return 0;

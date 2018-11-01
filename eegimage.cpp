@@ -10,9 +10,12 @@
 #include <QGlobal.h>
 #include <QTime>
 
+#include "vl/sift.h"
+#include "vl/mathop.h"
+
 #include "bcisift.cpp"
 
-const int imagewidth = 128;
+const int imagewidth = 256;
 const int imageheight= 240;
 
 const int numOctaves = 2;
@@ -34,6 +37,26 @@ static double psd=0;
 static int times=0;
 
 static double AVG=1612.0;
+
+void
+transpose_descriptor (vl_sift_pix* dst, vl_sift_pix* src)
+{
+  int const BO = 8 ;  /* number of orientation bins */
+  int const BP = 4 ;  /* number of spatial bins     */
+  int i, j, t ;
+
+  for (j = 0 ; j < BP ; ++j) {
+    int jp = BP - 1 - j ;
+    for (i = 0 ; i < BP ; ++i) {
+      int o  = BO * i + BP*BO * j  ;
+      int op = BO * i + BP*BO * jp ;
+      dst [op] = src[o] ;
+      for (t = 1 ; t < BO ; ++t) {
+        dst [BO - t + op] = src [t + o] ;
+      }
+    }
+  }
+}
 
 void cvWaitKeyWrapper()
 {
@@ -59,6 +82,7 @@ void cvWaitKeyWrapper()
             autotest=1;
             break;
         case 27:
+        case 'q':
             exit(-1);
             break;
     }
@@ -68,7 +92,7 @@ int eegimage(double avg, double data)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
-    cv::namedWindow("BrainWaves",2);
+    cv::namedWindow("BrainWaves",cv::WINDOW_NORMAL);
 
     static cv::Mat image(imageheight,imagewidth,CV_8U,cv::Scalar(0));
     static cv::Scalar color(255,255,255);
@@ -107,6 +131,39 @@ int eegimage(double avg, double data)
     if (idx>imagewidth)
     {
         std::cout << "-------------" << std::endl;
+
+
+
+        VlSiftFilt        *filt ;
+        std::vector<float> img;
+        for (int i = 0; i < image.rows; ++i)
+          for (int j = 0; j < image.cols; ++j)
+            img.push_back(image.at<unsigned char>(i, j));
+
+        filt = vl_sift_new (imagewidth, imageheight, 0, 1, 0) ; // M is width
+        //vl_dsift_process(filter, &img[0]);
+
+        vl_sift_pix  buf [128] ;
+        vl_sift_pix rbuf [128] ;
+        double                angles [4] ;
+        int                   nangles ;
+        VlSiftKeypoint        ik ;
+        VlSiftKeypoint        *k ;
+        double            *ikeys = 0 ;
+
+        vl_sift_keypoint_init (filt, &ik,
+                               128-1,
+                               120 - 1,
+                               1) ;
+        ik.sigmax = 1;
+        ik.sigmay = 1;
+
+        angles [0] = VL_PI / 2 - 0 ; // 0 is the angle
+        nangles    = 1 ;
+
+        vl_sift_calc_keypoint_descriptor (filt, buf, k, angles [0]) ;
+        transpose_descriptor (rbuf, buf) ;
+
 
         cv::Mat image2(imageheight,imagewidth,CV_8U,cv::Scalar(0));
         image = image2;

@@ -3,7 +3,9 @@
 
 #endif // LSL_H
 
-void sending();
+void sending128();
+
+void sendeegandmarkers();
 
 void receiving();
 
