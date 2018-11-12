@@ -129,10 +129,10 @@ int main( int argc, char **argv)
     }
     else if (strcmp(argv[1],"rand")==0)
     {
-        for(;;)
+        for(int i=0;i<1256;i++)
         {
-            eegimage(0,randInt2(50-6,50+6)-50);
-            //eegimage(0,0);
+            //eegimage(0,randInt2(50-6,50+6)-50);
+            eegimage(0,0);
         }
     }
 

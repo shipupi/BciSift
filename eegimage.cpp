@@ -92,9 +92,10 @@ void calculate_descriptors(cv::Mat image)
 {
     VlSiftFilt        *filt ;
     std::vector<float> img;
+
     for (int i = 0; i < image.rows; ++i)
       for (int j = 0; j < image.cols; ++j)
-        img.push_back(image.at<unsigned char>(i, j));
+        img.push_back(image.at<unsigned char>(i,j));
 
     setverbose(10);
 
@@ -117,7 +118,7 @@ void calculate_descriptors(cv::Mat image)
 
     vl_sift_keypoint_init (filt, &ik,
                            imagewidth/2-1,
-                           imageheight/2 - 1,
+                           imageheight/2-1,
                            1) ;
     ik.sigmax = 1;
     ik.sigmay = 1;
@@ -126,6 +127,8 @@ void calculate_descriptors(cv::Mat image)
 
     angles [0] = VL_PI / 2 - 0 ; // 0 is the angle
     nangles    = 1 ;
+
+    angles[0] = 0;
 
     printf("Descriptors\n");
     vl_sift_calc_keypoint_descriptor (filt, buf, k, angles[0]) ;
@@ -143,6 +146,8 @@ void calculate_descriptors(cv::Mat image)
           ((float*)descr) [128 * 1 + j] = x ;
         }
     }
+
+    vl_sift_delete (filt) ;
 
 }
 
@@ -162,7 +167,7 @@ int eegimage(double avg, double data)
     {
         //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
 
-        heightvalue = (imageheight/2)+(int)data - (int)avg;
+        heightvalue = (imageheight/2)+(int)data - (int)avg-1;
 
         if (heightvalue<0) heightvalue = 1;
         if (heightvalue>imageheight) heightvalue = (imageheight-1);
