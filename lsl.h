@@ -9,3 +9,5 @@ void sendeegandmarkers();
 
 void receiving();
 
+void receivingsignal();
+

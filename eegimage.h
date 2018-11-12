@@ -5,3 +5,5 @@
 
 
 int eegimage(double avg, double data);
+
+int eegimage(double signal[], int length, int gamma);

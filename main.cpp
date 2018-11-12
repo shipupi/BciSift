@@ -127,6 +127,10 @@ int main( int argc, char **argv)
     {
         receiving();
     }
+    else if (strcmp(argv[1],"processing")==0)
+    {
+        receivingsignal();
+    }
     else if (strcmp(argv[1],"rand")==0)
     {
         for(int i=0;i<1256;i++)

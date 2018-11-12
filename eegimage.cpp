@@ -151,6 +151,75 @@ void calculate_descriptors(cv::Mat image)
 
 }
 
+
+double mean(double signal[], int length)
+{
+    cv::Mat A(length,1,CV_64F,signal);
+    cv::Scalar mn = cv::mean(A);
+
+    return mn.val[0];
+}
+
+int eegimage(double signal[],int length, int gamma)
+{
+    // 1 La imagen queda igual
+    // 2 La imagen se ajusta a toda la pantalla y se resizea.
+    cv::namedWindow("BrainWaves",cv::WINDOW_NORMAL);
+
+    int height;
+    int width;
+
+    height = 240;
+    width = length;
+
+    cv::Mat image(height,width,CV_8U,cv::Scalar(0));
+    cv::Scalar color(255,255,255);
+
+    int idx = 1;
+
+    int zerolevel=height/2;
+
+    double avg = mean(signal,length);
+
+    for(idx=0;idx<width-1;idx++)
+    {
+        //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
+
+        double value = zerolevel+(int)(signal[idx]*gamma) - (int)avg-1;
+        double valuenext = zerolevel+(int)(signal[idx+1]*gamma) - (int)avg-1;
+
+        if (value<0) value = 1;
+        if (value>height) value = (height-1);
+
+        if (valuenext<0) valuenext = 1;
+        if (valuenext>height) valuenext = (height-1);
+
+        //std::cout<<"Idx:" << idx << std::endl;
+
+        cv::Point pt1(idx,value);
+        cv::Point pt2(idx+1,valuenext);
+
+        // Draw a new line between pt1 and pt2.  The line routine uses Brasenham algorithm.
+        cv::line(image, pt1, pt2,color);
+    }
+
+
+    // The Window Name must be the same.
+    cv::imshow("BrainWaves", image);
+
+
+    std::cout << "-------------" << std::endl;
+
+
+    //calculate_descriptors(image);
+    cvWaitKeyWrapper();
+
+    return 1;
+}
+
+
+
+
 int eegimage(double avg, double data)
 {
     // 1 La imagen queda igual
