@@ -11,3 +11,5 @@ void receiving();
 
 void receivingsignal();
 
+int receivingtrial();
+

@@ -129,7 +129,7 @@ int main( int argc, char **argv)
     }
     else if (strcmp(argv[1],"processing")==0)
     {
-        receivingsignal();
+        receivingtrial();
     }
     else if (strcmp(argv[1],"rand")==0)
     {

@@ -160,11 +160,14 @@ double mean(double signal[], int length)
     return mn.val[0];
 }
 
-int eegimage(double signal[],int length, int gamma)
+int eegimage(double signal[],int length, int gamma,int label)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
-    cv::namedWindow("BrainWaves",cv::WINDOW_NORMAL);
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%d", label+1);
+    std::string windowname = buff;
+    cv::namedWindow(windowname,cv::WINDOW_NORMAL);
 
     int height;
     int width;
@@ -205,7 +208,7 @@ int eegimage(double signal[],int length, int gamma)
 
 
     // The Window Name must be the same.
-    cv::imshow("BrainWaves", image);
+    cv::imshow(windowname, image);
 
 
     std::cout << "-------------" << std::endl;
