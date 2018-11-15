@@ -141,7 +141,11 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
     int stimmarkers[130];
     int stimcounter=0;
 
-    double tsoffset;
+    double tsoffset=0;
+
+    memset(counters,0,12*sizeof(int));
+    memset(signal,0,256*400*sizeof(double));
+    memset(Segments,0,15*12*256*sizeof(double));
 
     while(true)
     {
@@ -190,12 +194,19 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
     for(int i=0;i<stimcounter;i++)
     {
         int stim = stims[i];
-        printf("\nCopying segment %d into position %d.",stim, stimmarkers[i]);
-        signal[200] = 5;signal[220] = -5;
+        printf("\nCopying segment %d into position %d on repetition %d.",stim, stimmarkers[i],counters[stim]);
+        //signal[stimmarkers[i] + 200] = 50;signal[stimmarkers[i] + 220] = -5;
         //memcpy(Segments[counters[stim]++][stim],&signal[stimmarkers[i]],256*sizeof(double));
+
+        for(int j=0;j<256;j++)
+        {
+            Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
+        }
+        counters[stim]++;
+
     }
 
-    //eegimage(signal,256, 10);
+
     for(int i=0;i<12;i++)
     {
         printf("\nCounter for stim %d:%d",i,counters[i] );
