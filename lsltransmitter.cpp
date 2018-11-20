@@ -2,6 +2,14 @@
 #include <stdlib.h>
 
 #include "eegimage.h"
+#include "plotprocessing.h"
+#include "unp.h"
+
+struct SpellerLetter
+{
+    int row;
+    int col;
+};
 
 using namespace lsl;
 
@@ -165,24 +173,31 @@ int receivingsignal() {
 }
 
 
-void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
+struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
 {
     // receive data & time stamps forever (not displaying them here)
     float sample[8];
     float marker;
 
-    double Segments[15][12][256];
+    int window = (int)Fs * 1;   // 1 is one second, the length of the segment.
+
+    double Segments[15][12][window];
     int counters[12];
-    double signal[256*400];
+    double signal[window*400]; // FIXME Trial length should be no longer than 400 seconds.
+    // FIXME number of intensifications should be no longer than 130.
     int stims[130];
     int stimmarkers[130];
     int stimcounter=0;
 
     double tsoffset=0;
 
+    bool hit = false;
+    int row=-1;
+    int col=-1;
+
     memset(counters,0,12*sizeof(int));
-    memset(signal,0,256*400*sizeof(double));
-    memset(Segments,0,15*12*256*sizeof(double));
+    memset(signal,0,window*400*sizeof(double));
+    memset(Segments,0,15*12*Fs*sizeof(double));
 
     while(true)
     {
@@ -198,7 +213,7 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
             }
         }
     }
-    for(int i=0;i<256*400;i++)
+    for(int i=0;i<window*400;i++)
     {
         double ts = inlet.pull_sample(&sample[0],8);
         //printf ("%10.8f:%10.8f\n",ts,sample[0]);
@@ -208,15 +223,31 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
         if (mts>0)
         {
             printf ("\n%10.8f:%10.8f:Marker %10.8f",ts,mts,marker);
+
+            if (marker == 33285)
+            {
+                // Hit found.  Next stim will be hit... This is dangerous.#FIXME
+                hit = true;
+            } else if (marker  == 33286)
+            {
+                hit = false;
+            }
+
             if (marker >= 33025 && marker <= 33037)
             {
                 int stim = (int)marker - 33025;
                 printf ("- Stim: %d.",ts,mts,marker,stim);
                 stims[stimcounter]=stim;
-                stimmarkers[stimcounter] = (int)((mts-tsoffset)*Fs*gammat);
+                stimmarkers[stimcounter] = (int)((mts-tsoffset)*window*gammat);
                 stimcounter++;
+
+                if (hit && stim<=5)
+                    row = stim;
+                if (hit && stim>=6)
+                    col = stim;
+
             }
-            // Trial stop
+            // Trial stop 32770 is the end of the experiment.
             if (((int)marker)==32774)
             {
                 printf("\nEnd of Trial triggered.");
@@ -235,7 +266,7 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
         //signal[stimmarkers[i] + 200] = 50;signal[stimmarkers[i] + 220] = -5;
         //memcpy(Segments[counters[stim]++][stim],&signal[stimmarkers[i]],256*sizeof(double));
 
-        for(int j=0;j<256;j++)
+        for(int j=0;j<window;j++)
         {
             Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
         }
@@ -243,14 +274,13 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
 
     }
 
-
     for(int i=0;i<12;i++)
     {
         printf("\nCounter for stim %d:%d",i,counters[i] );
 
-        double sign[256];
+        double sign[window];
 
-        for(int j=0;j<256;j++)
+        for(int j=0;j<window;j++)
         {
             double avg = 0;
             for(int rep=0;rep<counters[i];rep++)
@@ -260,12 +290,19 @@ void processtrial(double gammat, double Fs, stream_inlet &inlet, stream_inlet &m
             sign[j] = avg/(counters[i]*1.0F);
         }
 
-        eegimage(sign,256, 10,i);
+        eegimage(&descr[i*128],sign,window, 10,i);
 
     }
+
+    printf("Row: %d, Col: %d.\n",row,col);
+
+    struct SpellerLetter l;
+    l.row = row;
+    l.col = col;
+    return l;
 }
 
-int receivingtrial() {
+int trainspeller() {
     using namespace lsl;
 
     // resolve the stream of interest & make an inlet to get data from the first result
@@ -278,15 +315,66 @@ int receivingtrial() {
     double Fs = 256;
     double gammat  =1;
 
-    while (true)
+    int trials = 5;
+
+    float *templates = new float[trials*2*128];
+    float *descriptors = new float[trials*12*128];
+
+    for(int j=0;j<trials;j++)
     {
-        processtrial(gammat, Fs, inlet,markersInlet);
+        struct SpellerLetter l;
+        l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
 
-        //return 0;
-
+        memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
+        memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
 
     }
+
+    memorize(templates,2*trials);
+
+    delete [] descriptors;
+    delete [] templates;
 
     return 0;
 }
 
+
+int onlinespeller() {
+    using namespace lsl;
+
+    // resolve the stream of interest & make an inlet to get data from the first result
+    std::vector<stream_info> markers = resolve_stream("name","openvibeMarkers2");
+    stream_inlet markersInlet(markers[0]);
+
+    std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
+    stream_inlet inlet(results[0]);
+
+    double Fs = 256;
+    double gammat  =1;
+
+    int trials = 5;
+
+    float *templates = new float[trials*2*128];
+    float *descriptors = new float[trials*12*128];
+
+    int sockfd = createsignalserver();
+
+    for(int j=0;j<trials;j++)
+    {
+        struct SpellerLetter l;
+        l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
+
+        //memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
+        //memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
+
+        informresult(sockfd);
+
+    }
+
+    //memorize(templates,2*trials);
+
+    delete [] descriptors;
+    delete [] templates;
+
+    return 0;
+}
