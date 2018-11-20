@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     lsl.cpp \
     lsltransmitter.cpp \
     decoder.cpp \
-    serializer.cpp
+    serializer.cpp \
+    unp.cpp
 
 #INCLUDEPATH += D:\opencv\build\include\
 
@@ -68,4 +69,5 @@ HEADERS += \
     dsp.h \
     lsl.h \
     decoder.h \
-    serializer.h
+    serializer.h \
+    unp.h
