@@ -30,6 +30,13 @@ void serializeMatbin(cv::Mat& mat, std::string filename){
 
 cv::Mat deserializeMatbin(std::string filename){
     FILE* fp = fopen(filename.c_str(), "rb");
+
+    if (fp == NULL)
+    {
+        cout << "File do not exist." << std::endl;
+        exit(-1);
+    }
+
     int header[4];
     fread(header, sizeof(int), 4, fp);
     int cols            = header[0];
