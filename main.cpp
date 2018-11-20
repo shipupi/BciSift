@@ -130,10 +130,6 @@ int main( int argc, char **argv)
     {
         receiving();
     }
-    else if (strcmp(argv[1],"processing")==0)
-    {
-        receivingtrial();
-    }
     else if (strcmp(argv[1],"randonline")==0)
     {
         for(int i=0;i<256*10;i++)
@@ -141,6 +137,14 @@ int main( int argc, char **argv)
             //eegimage(0,randInt2(50-6,50+6)-50);
             eegimage(0,0);
         }
+    }
+    else if (strcmp(argv[1],"train")==0)
+    {
+        trainspeller();
+    }
+    else if (strcmp(argv[1],"online")==0)
+    {
+        onlinespeller();
     }
     else if (strcmp(argv[1],"rand")==0)
     {
