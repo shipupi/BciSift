@@ -580,6 +580,17 @@ void comparehits()
 }
 
 
+void memorize(float *descr, int samples)
+{
+    cv::Mat training(samples,128,CV_32FC1);
+    std::memcpy(training.data, descr, samples*128*sizeof(float));
+
+    printf("Template Matrix Size: %d, %d\n", training.size().width, training.size().height);
+    printf("Size of Sample: %d, %d\n", training.row(0).size().width, training.row(0).size().height);
+
+    serializeMatbin(training,"training.bin");
+}
+
 void classify(float *descr)
 {
     cv::Mat descriptors(20,128,CV_32FC1);
@@ -606,11 +617,11 @@ void classify(float *descr)
     int whachs[] = {0,6,7,8,9,10,16,17,18,19};
     for(int i=0;i<10;i++)
     {
-        //training.push_back(descriptors.row(whichs[i]));
+        training.push_back(descriptors.row(whichs[i]));
         testing.push_back(descriptors.row(whachs[i]));
     }
 
-    training = deserializeMatbin("training.bin");
+    //training = deserializeMatbin("training.bin");
 
     cv::Ptr<SVM> svm = SVM::create();
     svm->setType(SVM::C_SVC);
