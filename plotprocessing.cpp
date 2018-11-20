@@ -16,6 +16,8 @@
 #include <QGlobal.h>
 #include <QTime>
 
+#include "serializer.h"
+
 using namespace cv::ml;
 
 
@@ -574,5 +576,73 @@ void comparehits()
         }
 
     }
+
+}
+
+
+void classify(float *descr)
+{
+    cv::Mat descriptors(20,128,CV_32FC1);
+    std::memcpy(descriptors.data, descr, 20*128*sizeof(float));
+
+    cv::Mat labelMat;
+    std::vector<int> labels;
+
+    cv::Mat training;
+    cv::Mat testing;
+
+    for(int i=0;i<10;i++)
+    {
+        labels.push_back(1);
+        labelMat.push_back(1);
+    }
+    for(int i=10;i<20;i++)
+    {
+        labels.push_back(2);
+        labelMat.push_back(2);
+    }
+
+    int whichs[] = {1,2,3,4,5,11,12,13,14,15};
+    int whachs[] = {0,6,7,8,9,10,16,17,18,19};
+    for(int i=0;i<10;i++)
+    {
+        //training.push_back(descriptors.row(whichs[i]));
+        testing.push_back(descriptors.row(whachs[i]));
+    }
+
+    training = deserializeMatbin("training.bin");
+
+    cv::Ptr<SVM> svm = SVM::create();
+    svm->setType(SVM::C_SVC);
+    svm->setKernel(SVM::LINEAR);
+    svm->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER, 100, 1e-6));
+
+
+    printf("Training Matrix Size: %d, %d\n", training.size().width, training.size().height);
+    printf("Testing Matrix Size: %d, %d\n", testing.size().width, testing.size().height);
+    printf("Label Size: %d, %d\n", labelMat.size().width, labelMat.size().height);
+    printf("Size of Sample: %d, %d\n", training.row(0).size().width, training.row(0).size().height);
+
+    svm->train(descriptors, ROW_SAMPLE, labelMat);
+
+    int accuracies=0;
+
+    for(int i=0;i<10;i++)
+    {
+        printf("%d\n",i);
+        printf("Size: %d, %d\n", testing.row(i).size().width, testing.row(i).size().height);
+        float response = svm->predict(testing.row(i));
+        int expected = labelMat.at<int>(0,whachs[i]);
+        printf("Expected vs Predicted %d vs %10.6f\n", expected,response);
+
+
+        if (response==expected) accuracies++;
+
+    }
+
+
+    printf ("Success %10.6f\n", (float)accuracies/10);
+
+    serializeMatbin(training,"training.bin");
 
 }

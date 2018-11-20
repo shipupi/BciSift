@@ -7,6 +7,8 @@ void sending128();
 
 void sendeegandmarkers();
 
+void sendeeg();
+
 void receiving();
 
 void receivingsignal();

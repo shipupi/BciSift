@@ -7,6 +7,8 @@
 
 #include "eegimage.h"
 #include "lsl.h"
+#include "plotprocessing.h"
+#include "decoder.h"
 
 
 int  eeglogger(char *filename, char *subject, int duration);
@@ -119,6 +121,7 @@ int main( int argc, char **argv)
     //process();
     //testdsp();
 
+
     if (strcmp(argv[1],"send")==0)
     {
         sendeegandmarkers();
@@ -131,13 +134,37 @@ int main( int argc, char **argv)
     {
         receivingtrial();
     }
-    else if (strcmp(argv[1],"rand")==0)
+    else if (strcmp(argv[1],"randonline")==0)
     {
-        for(int i=0;i<1256;i++)
+        for(int i=0;i<256*10;i++)
         {
             //eegimage(0,randInt2(50-6,50+6)-50);
             eegimage(0,0);
         }
+    }
+    else if (strcmp(argv[1],"rand")==0)
+    {
+        //float descr[20][128];
+
+        float *descr = new float[20*128];
+        for(int i=0;i<10;i++)
+        {
+            double signal[256];
+            memset(signal,0,sizeof(double)*256);
+            eegimage(&descr[i*128],signal,256,1,1);
+        }
+
+        for(int i=10;i<20;i++)
+        {
+            double signal[256];
+            memset(signal,0,sizeof(double)*256);
+            signal[120] = signal[132] = 40;
+            eegimage(&descr[i*128],signal,256,1,1);
+        }
+
+        // Joya en este punto puedo tratar de clasificarlos.
+        classify(descr);
+
     }
 
 

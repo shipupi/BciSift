@@ -88,7 +88,7 @@ void cvWaitKeyWrapper()
     }
 }
 
-void calculate_descriptors(cv::Mat image)
+void calculate_descriptors(float *descr,cv::Mat image, int width, int height,double Sx, double Sy, bool floatDescriptors )
 {
     VlSiftFilt        *filt ;
     std::vector<float> img;
@@ -97,9 +97,9 @@ void calculate_descriptors(cv::Mat image)
       for (int j = 0; j < image.cols; ++j)
         img.push_back(image.at<unsigned char>(i,j));
 
-    setverbose(10);
+    //setverbose(10);
 
-    filt = vl_sift_new (imagewidth, imageheight, 1, 3, 0) ; // M is width
+    filt = vl_sift_new (width, height, 1, 3, 0) ; // M is width
     //vl_dsift_process(filter, &img[0]);
 
     int err   = vl_sift_process_first_octave (filt, (const vl_sift_pix *)&img[0]) ;
@@ -113,15 +113,15 @@ void calculate_descriptors(cv::Mat image)
     VlSiftKeypoint        ik ;
     VlSiftKeypoint        *k ;
     double            *ikeys = 0 ;
-    bool floatDescriptors = true;
-    double descr[128];
+    //bool floatDescriptors = true;
+    //double descr[128];
 
     vl_sift_keypoint_init (filt, &ik,
-                           imagewidth/2-1,
-                           imageheight/2-1,
+                           width/2-1,
+                           height/2-1,
                            1) ;
-    ik.sigmax = 1;
-    ik.sigmay = 1;
+    ik.sigmax = Sx;
+    ik.sigmay = Sy;
 
     k = &ik ;
 
@@ -130,7 +130,6 @@ void calculate_descriptors(cv::Mat image)
 
     angles[0] = 0;
 
-    printf("Descriptors\n");
     vl_sift_calc_keypoint_descriptor (filt, buf, k, angles[0]) ;
     transpose_descriptor (rbuf, buf) ;
 
@@ -152,6 +151,12 @@ void calculate_descriptors(cv::Mat image)
 }
 
 
+void calculate_descriptors(cv::Mat image)
+{
+    float descr[128];
+    calculate_descriptors(descr, image, imagewidth, imageheight, 1, 1, true);
+}
+
 double mean(double signal[], int length)
 {
     cv::Mat A(length,1,CV_64F,signal);
@@ -160,7 +165,7 @@ double mean(double signal[], int length)
     return mn.val[0];
 }
 
-int eegimage(double signal[],int length, int gamma,int label)
+int eegimage(float descr[128],double signal[],int length, int gamma,int label)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
@@ -213,14 +218,17 @@ int eegimage(double signal[],int length, int gamma,int label)
 
     std::cout << "-------------" << std::endl;
 
-
-    //calculate_descriptors(image);
+    calculate_descriptors(descr,image,imagewidth,imageheight,1,1,true);
     cvWaitKeyWrapper();
 
     return 1;
 }
 
-
+int eegimage(double signal[],int length, int gamma,int label)
+{
+    float descr[128];
+    return eegimage(descr,signal,length, gamma,label);
+}
 
 
 int eegimage(double avg, double data)

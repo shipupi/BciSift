@@ -27,7 +27,9 @@ SOURCES += main.cpp \
     plotprocessing.cpp \
     dsp.cpp \
     lsl.cpp \
-    lsltransmitter.cpp
+    lsltransmitter.cpp \
+    decoder.cpp \
+    serializer.cpp
 
 #INCLUDEPATH += D:\opencv\build\include\
 
@@ -64,4 +66,6 @@ HEADERS += \
     eegimage.h \
     plotprocessing.h \
     dsp.h \
-    lsl.h
+    lsl.h \
+    decoder.h \
+    serializer.h

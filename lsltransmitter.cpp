@@ -11,8 +11,45 @@ using namespace lsl;
  * /
  */
 
-
 int sendeegandmarkers() {
+
+    const double markertypes[] = {32773.0, 32774.0, 33025.0, 33026.0, 33027.0, 33028.0,33029.0,33030.0,33031.0,
+                                 33032.0,33033.0,33034.0,33035.0,33036.0,33037.0};
+
+    // make a new stream_info (128ch) and open an outlet with it
+    stream_info info("openvibeSignal2","EEG",8);
+    stream_outlet outleteeg(info);
+
+    // make a new stream_info
+    lsl::stream_info infomk("openvibeMarkers2","Markers",1,lsl::IRREGULAR_RATE,lsl::cf_double64,"myuniquesourceid23443");
+
+    // make a new outlet
+    lsl::stream_outlet outletmk(infomk);
+
+
+    // send data forever
+
+    float forwardsample[8];
+
+    while(true) {
+        double ts = 1.12;
+
+        forwardsample[0] = ts;
+
+        // generate random data
+        for (int c=0;c<8;c++)
+            forwardsample[c] = (rand()%1500)/500.0-1.5;
+
+        printf ("%10.8f\n",forwardsample[0]);
+
+        // send it
+        outleteeg.push_sample(forwardsample);
+    }
+
+    return 0;
+}
+
+int sendeeg() {
 
     // make a new stream_info (128ch) and open an outlet with it
     stream_info info("openvibeSignal","EEG",11);
