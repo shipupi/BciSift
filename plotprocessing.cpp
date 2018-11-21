@@ -591,10 +591,10 @@ void memorize(float *descr, int samples)
     serializeMatbin(training,"training.bin");
 }
 
-void classify(float *descr)
+void classify(float *descr, int trials, int trialstolearn,int trialstotest)
 {
-    cv::Mat descriptors(20,128,CV_32FC1);
-    std::memcpy(descriptors.data, descr, 20*128*sizeof(float));
+    cv::Mat descriptors(trials*12,128,CV_32FC1);
+    std::memcpy(descriptors.data, descr, trials*12*128*sizeof(float));
 
     cv::Mat labelMat;
     std::vector<int> labels;
@@ -602,23 +602,42 @@ void classify(float *descr)
     cv::Mat training;
     cv::Mat testing;
 
-    for(int i=0;i<10;i++)
+    for(int j=0;j<trials;j++)
     {
-        labels.push_back(1);
-        labelMat.push_back(1);
-    }
-    for(int i=10;i<20;i++)
-    {
-        labels.push_back(2);
-        labelMat.push_back(2);
+        for(int i=0;i<6;i++)
+        {
+            labels.push_back(1);
+            labelMat.push_back(1);
+        }
+        for(int i=6;i<12;i++)
+        {
+            labels.push_back(2);
+            labelMat.push_back(2);
+        }
     }
 
-    int whichs[] = {1,2,3,4,5,11,12,13,14,15};
-    int whachs[] = {0,6,7,8,9,10,16,17,18,19};
-    for(int i=0;i<10;i++)
+    int whichs[trialstolearn*12];
+    int whachs[trialstotest*12];
+
+    for(int i=0;i<trialstolearn*12;i++)
+        whichs[i] = i;
+
+    for(int i=trialstolearn*12;i<trials*12;i++)
+        whachs[i-trialstolearn*12]=i;
+
+    cv::Mat labelTraining;
+    cv::Mat labelTesting;
+
+    for(int i=0;i<trialstolearn*12;i++)
     {
         training.push_back(descriptors.row(whichs[i]));
+        labelTraining.push_back(labelMat.row(whichs[i]));
+    }
+
+    for(int i=0;i<trialstotest*12;i++)
+    {
         testing.push_back(descriptors.row(whachs[i]));
+        labelTesting.push_back(labelMat.row(whachs[i]));
     }
 
     //training = deserializeMatbin("training.bin");
@@ -629,22 +648,24 @@ void classify(float *descr)
     svm->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER, 100, 1e-6));
 
 
-    printf("Training Matrix Size: %d, %d\n", training.size().width, training.size().height);
-    printf("Testing Matrix Size: %d, %d\n", testing.size().width, testing.size().height);
     printf("Label Size: %d, %d\n", labelMat.size().width, labelMat.size().height);
+    printf("Training Matrix Size: %d, %d\n", training.size().width, training.size().height);
+    printf("Training Label Size: %d, %d\n", labelTraining.size().width, labelTraining.size().height);
+    printf("Testing Matrix Size: %d, %d\n", testing.size().width, testing.size().height);
+    printf("Testing Label Size: %d, %d\n", labelTesting.size().width, labelTesting.size().height);
     printf("Size of Sample: %d, %d\n", training.row(0).size().width, training.row(0).size().height);
 
-    svm->train(descriptors, ROW_SAMPLE, labelMat);
+    svm->train(training, ROW_SAMPLE, labelTraining);
 
     int accuracies=0;
 
-    for(int i=0;i<10;i++)
+    for(int i=0;i<trialstotest*12;i++)
     {
         printf("%d\n",i);
         printf("Size: %d, %d\n", testing.row(i).size().width, testing.row(i).size().height);
         float response = svm->predict(testing.row(i));
-        int expected = labelMat.at<int>(0,whachs[i]);
-        printf("Expected vs Predicted %d vs %10.6f\n", expected,response);
+        int expected = labelTesting.at<int>(0,i);
+        printf("Expected (%d) vs Predicted (%1.0f)\n", expected,response);
 
 
         if (response==expected) accuracies++;
@@ -652,7 +673,7 @@ void classify(float *descr)
     }
 
 
-    printf ("Success %10.6f\n", (float)accuracies/10);
+    printf ("Success %10.6f\n", (float)accuracies/(trialstotest*12));
 
     serializeMatbin(training,"training.bin");
 
