@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <fcntl.h>
 
 #define PORT	 7788
 #define MAXLINE 1024
@@ -22,6 +23,8 @@ int createsignalserver()
         perror("socket creation failed");
         exit(EXIT_FAILURE);
     }
+
+    fcntl(sockfd, F_SETFL, O_NONBLOCK);
 
     memset(&servaddr, 0, sizeof(servaddr));
 
@@ -43,36 +46,60 @@ int createsignalserver()
 }
 
 // Driver code
-void informresult(int sockfd)
+void informresult(int sockfd, int row, int col)
 {
     char buffer[MAXLINE];
-    char *message = "[1,1]";
+    char message[256];
     struct sockaddr_in cliaddr;
+
+    // OpenVibe expect row,col [1-6][1-6].
+    sprintf(message,"[%2d,%2d]",row,col-6);
 
     memset(&cliaddr, 0, sizeof(cliaddr));
 
-    for(int i=0;i<6;i++)
+    socklen_t n;
+    int len;
+    while(true)
     {
-        socklen_t n;
-        n = recvfrom(sockfd, (char *)buffer, MAXLINE,
+        len = recvfrom(sockfd, (char *)buffer, MAXLINE,
                     MSG_WAITALL, ( struct sockaddr *) &cliaddr,
                     &n);
-        buffer[n] = '\0';
-        printf("Client : %s\n", buffer);
-
-        char clntIP[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, (struct inaddr *)&cliaddr.sin_addr,clntIP,sizeof(clntIP));
-
-        printf("The source is %s on port %d.\n", clntIP,cliaddr.sin_port);
-
-
-        send(sockfd,(const char *)message, strlen(message),NULL);
-
-        int a=3;
-        sendto(sockfd, (int *)a, 1,
-            NULL, (const struct sockaddr *) &cliaddr,
-                1);
-        printf("%s sent.\n", message);
+        if (len>0)
+        {
+            buffer[len] = '\0';
+            printf("Message Flag : %s\n", buffer);
+            if (strcmp(buffer,"1")==0)
+                break;
+        }
     }
+
+    char clntIP[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, (struct inaddr *)&cliaddr.sin_addr,clntIP,sizeof(clntIP));
+
+    printf("EEG source is %s on port %d.\n", clntIP,cliaddr.sin_port);
+
+    sleep(2);
+
+    while(true)
+    {
+        sendto(sockfd, message, strlen(message), 0, (const struct sockaddr *)&cliaddr, sizeof(cliaddr));
+
+        printf("Retrying %s sent.\n", message);
+
+        len = recvfrom(sockfd, (char *)buffer, MAXLINE,
+                    MSG_WAITALL, ( struct sockaddr *) &cliaddr,
+                    &n);
+
+        if (len>0)
+        {
+            buffer[len] = '\0';
+            printf("Final Message Flag : %s\n", buffer);
+            if (strcmp(buffer,"2")==0)
+                break;
+        }
+    }
+
+
+
 
 }

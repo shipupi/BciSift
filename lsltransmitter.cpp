@@ -367,7 +367,7 @@ int onlinespeller() {
         //memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
         //memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
 
-        informresult(sockfd);
+        informresult(sockfd,l.row,l.col);
 
     }
 
