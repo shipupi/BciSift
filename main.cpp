@@ -19,6 +19,14 @@ int randInt2(int low, int high)
     return qrand() % ((high + 1) - low) + low;
 }
 
+void randomSignal(double *signal, int window, int variance)
+{
+    for(int i=0;i<window;i++)
+    {
+        signal[i] = randInt2(50-variance,50+variance)-50;
+    }
+}
+
 int madin(int argc, char *argv[])
 {
     //std::string imagename = "HappyFish.jpg";
@@ -149,25 +157,33 @@ int main( int argc, char **argv)
     else if (strcmp(argv[1],"rand")==0)
     {
         //float descr[20][128];
+        int trials = 7*5;
 
-        float *descr = new float[20*128];
-        for(int i=0;i<10;i++)
+        float *descr = new float[7*5*12*128];
+        for(int j=0;j<trials;j++)
         {
-            double signal[256];
-            memset(signal,0,sizeof(double)*256);
-            eegimage(&descr[i*128],signal,256,1,1);
-        }
+            for(int i=0;i<6;i++)
+            {
+                double signal[256];
+                memset(signal,0,sizeof(double)*256);
+                eegimage(&descr[(j*12+i)*128],signal,256,1,1);
+            }
 
-        for(int i=10;i<20;i++)
-        {
-            double signal[256];
-            memset(signal,0,sizeof(double)*256);
-            signal[120] = signal[132] = 40;
-            eegimage(&descr[i*128],signal,256,1,1);
+            for(int i=6;i<12;i++)
+            {
+                double signal[256];
+                memset(signal,0,sizeof(double)*256);
+                signal[120] = signal[132] = 40;
+                signal[128] = -50;
+                //randomSignal(signal,256,20);
+                eegimage(&descr[(j*12+i)*128],signal,256,1,1);
+            }
         }
 
         // Joya en este punto puedo tratar de clasificarlos.
-        classify(descr);
+        classify(descr, trials,3*5,4*5);
+
+        delete [] descr;
 
     }
 

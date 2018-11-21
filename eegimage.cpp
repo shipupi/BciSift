@@ -165,13 +165,10 @@ double mean(double signal[], int length)
     return mn.val[0];
 }
 
-int eegimage(float descr[128],double signal[],int length, int gamma,int label)
+
+
+int eegimage(float descr[128],double signal[], int length, int gamma, std::string windowname)
 {
-    // 1 La imagen queda igual
-    // 2 La imagen se ajusta a toda la pantalla y se resizea.
-    char buff[100];
-    snprintf(buff, sizeof(buff), "%d", label+1);
-    std::string windowname = buff;
     cv::namedWindow(windowname,cv::WINDOW_NORMAL);
 
     int height;
@@ -222,6 +219,16 @@ int eegimage(float descr[128],double signal[],int length, int gamma,int label)
     cvWaitKeyWrapper();
 
     return 1;
+}
+
+int eegimage(float descr[128],double signal[],int length, int gamma,int windowlabelid)
+{
+    // 1 La imagen queda igual
+    // 2 La imagen se ajusta a toda la pantalla y se resizea.
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%d", windowlabelid+1);
+    std::string windowname = buff;
+    return eegimage(descr,signal,length,gamma, windowname);
 }
 
 int eegimage(double signal[],int length, int gamma,int label)
