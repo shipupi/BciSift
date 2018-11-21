@@ -17,6 +17,7 @@
 #include <QTime>
 
 #include "serializer.h"
+#include "spellerletter.h"
 
 using namespace cv::ml;
 
@@ -591,6 +592,114 @@ void memorize(float *descr, int samples)
     serializeMatbin(training,"training.bin");
 }
 
+
+struct SpellerLetter classifytrial(float *descr)
+{
+    cv::Mat descriptors(1*12,128,CV_32FC1);
+
+    cv::Mat training;
+
+    std::memcpy(descriptors.data, descr, 1*12*128*sizeof(float));
+
+    // Load the template database obtained during training.
+    training = deserializeMatbin("training.bin");
+
+    printf("Template Matrix Size: %d, %d\n", training.size().width, training.size().height);
+    printf("Query Matrix Size: %d, %d\n", descriptors.size().width, descriptors.size().height);
+
+    printf("Size of Template Element: %d, %d\n", training.row(0).size().width, training.row(0).size().height);
+    printf("Size of Query Element: %d, %d\n", descriptors.row(0).size().width, descriptors.row(0).size().height);
+
+    cv::flann::Index flann_index(training, cv::flann::KDTreeIndexParams(1));
+
+
+    int row=-1;
+    {
+        std::vector<double> sum;
+
+        for(int index=0;index<6;index++)
+        {
+            cv::Mat query = descriptors.row(index);
+            cv::Mat indices, dists; //neither assume type nor size here !
+            double radius= 2.0;
+
+            //flann_index.radiusSearch(query, indices, dists, radius, max_neighbours,cv::flann::SearchParams(32));
+
+            flann_index.knnSearch(query, indices, dists, 1,cv::flann::SearchParams(32) );
+
+            printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
+
+            printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
+
+            printf("Dist:%f\n", cv::sum( dists )[0]);
+
+            sum.push_back(cv::sum( dists )[0]);
+        }
+        printf("Classes %d\n", sum.size());
+
+        int min=0;
+        double minvalue=sum[0];
+        for(int index=1;index<6;index++)
+        {
+            if (sum[index]<=minvalue)
+            {
+                min = index;
+                minvalue = sum[index];
+            }
+        }
+        row = min;
+    }
+
+    printf("Row:%d\n",row);
+
+    int col=-1;
+    {
+        std::vector<double> sum;
+
+        for(int index=6;index<12;index++)
+        {
+            cv::Mat query = descriptors.row(index);
+            cv::Mat indices, dists; //neither assume type nor size here !
+            double radius= 2.0;
+
+            //flann_index.radiusSearch(query, indices, dists, radius, max_neighbours,cv::flann::SearchParams(32));
+
+            flann_index.knnSearch(query, indices, dists, 1,cv::flann::SearchParams(32) );
+
+            printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
+
+            printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
+
+
+            printf("Dist:%f\n", cv::sum( dists )[0]);
+
+            sum.push_back(cv::sum( dists )[0]);
+        }
+        printf("Classes %d\n", sum.size());
+
+        int min=0;
+        double minvalue=sum[0];
+        for(int index=1;index<6;index++)
+        {
+            if (sum[index]<=minvalue)
+            {
+                min = index;
+                minvalue = sum[index];
+            }
+        }
+        col = min;
+    }
+    printf("Col:%d\n",col);
+
+    struct SpellerLetter sp;
+    sp.row = row;
+    sp.col = col;
+
+    return sp;
+
+
+}
+
 void classify(float *descr, int trials, int trialstolearn,int trialstotest)
 {
     cv::Mat descriptors(trials*12,128,CV_32FC1);
@@ -675,6 +784,6 @@ void classify(float *descr, int trials, int trialstolearn,int trialstotest)
 
     printf ("Success %10.6f\n", (float)accuracies/(trialstotest*12));
 
-    serializeMatbin(training,"training.bin");
+    //serializeMatbin(training,"training.bin");
 
 }

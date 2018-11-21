@@ -5,12 +5,6 @@
 #include "plotprocessing.h"
 #include "unp.h"
 
-struct SpellerLetter
-{
-    int row;
-    int col;
-};
-
 using namespace lsl;
 
 /**
@@ -181,9 +175,11 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
 
     int window = (int)Fs * 1;   // 1 is one second, the length of the segment.
 
+    int maxtrialsamplelength = 400;
+
     double Segments[15][12][window];
     int counters[12];
-    double signal[window*400]; // FIXME Trial length should be no longer than 400 seconds.
+    double signal[window*maxtrialsamplelength]; // FIXME Trial length should be no longer than 400 seconds.
     // FIXME number of intensifications should be no longer than 130.
     int stims[130];
     int stimmarkers[130];
@@ -196,7 +192,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
     int col=-1;
 
     memset(counters,0,12*sizeof(int));
-    memset(signal,0,window*400*sizeof(double));
+    memset(signal,0,window*maxtrialsamplelength*sizeof(double));
     memset(Segments,0,15*12*Fs*sizeof(double));
 
     while(true)
@@ -213,7 +209,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
             }
         }
     }
-    for(int i=0;i<window*400;i++)
+    for(int i=0;i<window*maxtrialsamplelength;i++)
     {
         double ts = inlet.pull_sample(&sample[0],8);
         //printf ("%10.8f:%10.8f\n",ts,sample[0]);
@@ -269,6 +265,13 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
         for(int j=0;j<window;j++)
         {
             Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
+
+            // FIXME DEBUG
+            if (stim == row || stim == col)
+            {
+                Segments[counters[stim]][stim][120] = Segments[counters[stim]][stim][132] = 40;
+                Segments[counters[stim]][stim][128] = -50;
+            }
         }
         counters[stim]++;
 
@@ -294,7 +297,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
 
     }
 
-    printf("Row: %d, Col: %d.\n",row,col);
+    printf("Ground truth - Row: %d, Col: %d.\n",row,col);
 
     struct SpellerLetter l;
     l.row = row;
@@ -338,6 +341,14 @@ int trainspeller() {
     return 0;
 }
 
+int udp()
+{
+    int sockfd = createsignalserver();
+    struct SpellerLetter le;
+    le.row = 1;
+    le.col = 1;
+    informresult(sockfd,le.row,le.col);
+}
 
 int onlinespeller() {
     using namespace lsl;
@@ -367,7 +378,10 @@ int onlinespeller() {
         //memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
         //memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
 
-        informresult(sockfd,l.row,l.col);
+        struct SpellerLetter le = classifytrial(&descriptors[j*12]);
+
+
+        informresult(sockfd,le.row,le.col);
 
     }
 

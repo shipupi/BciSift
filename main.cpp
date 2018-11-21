@@ -154,6 +154,10 @@ int main( int argc, char **argv)
     {
         onlinespeller();
     }
+    else if (strcmp(argv[1],"udp")==0)
+    {
+        udp();
+    }
     else if (strcmp(argv[1],"rand")==0)
     {
         //float descr[20][128];

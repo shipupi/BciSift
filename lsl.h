@@ -15,5 +15,7 @@ void trainspeller();
 
 void onlinespeller();
 
+void udp();
+
 #endif // LSL_H
 
