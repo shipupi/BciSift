@@ -70,4 +70,5 @@ HEADERS += \
     lsl.h \
     decoder.h \
     serializer.h \
-    unp.h
+    unp.h \
+    spellerletter.h
