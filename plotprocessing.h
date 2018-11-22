@@ -9,6 +9,7 @@ void comparesignals(int subject1, int epoch1, int label1, int channel1, int subj
 void comparehits();
 void classify(float *descr, int trials, int trialstolearn, int trialstotest);
 void memorize(float *descr, int length);
+void remember(float *descr, int length);
 struct SpellerLetter classifytrial(float *descr);
 
 #endif // PLOTPROCESSING_H

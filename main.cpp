@@ -158,6 +158,14 @@ int main( int argc, char **argv)
     {
         udp();
     }
+    else if (strcmp(argv[1],"testclassify")==0)
+    {
+        testclassify();
+    }
+    else if (strcmp(argv[1],"trainclassify")==0)
+    {
+        trainclassify();
+    }
     else if (strcmp(argv[1],"rand")==0)
     {
         //float descr[20][128];

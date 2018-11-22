@@ -58,6 +58,25 @@ transpose_descriptor (vl_sift_pix* dst, vl_sift_pix* src)
   }
 }
 
+
+void
+printdescriptor (float *descr)
+{
+  int const BO = 8 ;  /* number of orientation bins */
+  int const BP = 4 ;  /* number of spatial bins     */
+  int i, j, t ;
+
+  for (j = 0 ; j < BP ; ++j) {
+    int jp = BP - 1 - j ;
+    for (i = 0 ; i < BP ; ++i) {
+      for (t = 0 ; t < BO ; ++t) {
+        printf("[%6.2f]  ", descr[BP*j+BP*i+t]);
+      }
+      printf("\n");
+    }
+  }
+}
+
 void cvWaitKeyWrapper()
 {
     int key = cv::waitKey(1);
@@ -103,7 +122,11 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
     //vl_dsift_process(filter, &img[0]);
 
     int err   = vl_sift_process_first_octave (filt, (const vl_sift_pix *)&img[0]) ;
-    if (err) return ;
+    if (err) {
+        std::cout << "SIFT Descriptor ERROR." << std::endl;
+
+        exit(-1);
+    }
 
 
     vl_sift_pix  buf [128] ;
@@ -137,12 +160,12 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
         for (int j = 0 ; j < 128 ; ++j) {
           float x = 512.0F * rbuf [j] ;
           x = (x < 255.0F) ? x : 255.0F ;
-          ((vl_uint8*)descr) [128 * 1 + j] = (vl_uint8) x ;
+          ((vl_uint8*)descr) [j] = (vl_uint8) x ;
         }
     } else {
         for (int j = 0 ; j < 128 ; ++j) {
           float x = 512.0F * rbuf [j] ;
-          ((float*)descr) [128 * 1 + j] = x ;
+          ((float*)descr) [j] = x ;
         }
     }
 
@@ -167,7 +190,7 @@ double mean(double signal[], int length)
 
 
 
-int eegimage(float descr[128],double signal[], int length, int gamma, std::string windowname)
+int eegimage(float *descr,double signal[], int length, int gamma, std::string windowname)
 {
     cv::namedWindow(windowname,cv::WINDOW_NORMAL);
 
@@ -215,20 +238,24 @@ int eegimage(float descr[128],double signal[], int length, int gamma, std::strin
 
     std::cout << "-------------" << std::endl;
 
-    calculate_descriptors(descr,image,imagewidth,imageheight,1,1,true);
+    calculate_descriptors(descr,image,width,height,1,1,true);
     cvWaitKeyWrapper();
 
     return 1;
 }
 
-int eegimage(float descr[128],double signal[],int length, int gamma,int windowlabelid)
+int eegimage(float *descr,double signal[],int length, int gamma,int windowlabelid)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
     char buff[100];
     snprintf(buff, sizeof(buff), "%d", windowlabelid+1);
     std::string windowname = buff;
-    return eegimage(descr,signal,length,gamma, windowname);
+    int ret = eegimage(descr,signal,length,gamma, windowname);
+
+    cv::moveWindow(windowname, 300*(windowlabelid % 4),10+250*(windowlabelid / 4));
+
+    return ret;
 }
 
 int eegimage(double signal[],int length, int gamma,int label)

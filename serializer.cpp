@@ -54,7 +54,8 @@ cv::Mat deserializeMatbin(std::string filename){
         fputs ("Reading error", stderr);
     }
 
-    std::cout << ((float*)outputMat.data)[200] << std::endl;
+    //std::cout << ((float*)outputMat.data)[200] << std::endl;
+
     fclose(fp);
     return outputMat;
 }

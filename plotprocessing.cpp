@@ -592,6 +592,16 @@ void memorize(float *descr, int samples)
     serializeMatbin(training,"training.bin");
 }
 
+void remember(float *descr, int samples)
+{
+    cv::Mat training;
+
+    // Load the template database obtained during training.
+    training = deserializeMatbin("training.bin");
+
+    std::memcpy(descr,training.data, samples*128*sizeof(float));
+}
+
 
 struct SpellerLetter classifytrial(float *descr)
 {
@@ -625,17 +635,17 @@ struct SpellerLetter classifytrial(float *descr)
 
             //flann_index.radiusSearch(query, indices, dists, radius, max_neighbours,cv::flann::SearchParams(32));
 
-            flann_index.knnSearch(query, indices, dists, 1,cv::flann::SearchParams(32) );
+            flann_index.knnSearch(query, indices, dists, 7,cv::flann::SearchParams(32) );
 
-            printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
+            //printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
 
-            printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
+            //printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
 
-            printf("Dist:%f\n", cv::sum( dists )[0]);
+            printf("Row %2d:Dist:%10.2f\n", index,cv::sum( dists )[0]);
 
             sum.push_back(cv::sum( dists )[0]);
         }
-        printf("Classes %d\n", sum.size());
+        //printf("Classes %d\n", sum.size());
 
         int min=0;
         double minvalue=sum[0];
@@ -650,8 +660,6 @@ struct SpellerLetter classifytrial(float *descr)
         row = min;
     }
 
-    printf("Row:%d\n",row);
-
     int col=-1;
     {
         std::vector<double> sum;
@@ -664,18 +672,18 @@ struct SpellerLetter classifytrial(float *descr)
 
             //flann_index.radiusSearch(query, indices, dists, radius, max_neighbours,cv::flann::SearchParams(32));
 
-            flann_index.knnSearch(query, indices, dists, 1,cv::flann::SearchParams(32) );
+            flann_index.knnSearch(query, indices, dists, 7,cv::flann::SearchParams(32) );
 
-            printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
+            //printf("Indices: %d, %d\n", indices.size().width, indices.size().height);
 
-            printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
+            //printf("Dists: %d, %d\n", dists.size().width, dists.size().height);
 
 
-            printf("Dist:%f\n", cv::sum( dists )[0]);
+            printf("Col %2d:Dist:%10.2f\n", index, cv::sum( dists )[0]);
 
             sum.push_back(cv::sum( dists )[0]);
         }
-        printf("Classes %d\n", sum.size());
+        //printf("Classes %d\n", sum.size());
 
         int min=0;
         double minvalue=sum[0];
@@ -689,11 +697,11 @@ struct SpellerLetter classifytrial(float *descr)
         }
         col = min;
     }
-    printf("Col:%d\n",col);
+    printf("Row, Col:%d,%d\n",row,col+6);
 
     struct SpellerLetter sp;
     sp.row = row;
-    sp.col = col;
+    sp.col = col+6;
 
     return sp;
 

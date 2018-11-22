@@ -8,3 +8,5 @@ debug/BciSift
 matching*.png
 Plots/*.tiff
 *.mat
+BciSift.pro.user
+Makefile

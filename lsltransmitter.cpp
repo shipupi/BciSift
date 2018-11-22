@@ -1,9 +1,11 @@
 #include <lsl_cpp.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "eegimage.h"
 #include "plotprocessing.h"
 #include "unp.h"
+
 
 using namespace lsl;
 
@@ -195,6 +197,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
     memset(signal,0,window*maxtrialsamplelength*sizeof(double));
     memset(Segments,0,15*12*Fs*sizeof(double));
 
+    // First wait until the trial-start mark arrives.  Discard everything.
     while(true)
     {
         double mts = markersInlet.pull_sample(&marker,1,0.0f);
@@ -209,6 +212,10 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
             }
         }
     }
+
+    // Start getting the entire EEG stream.
+    // Pull the markers and store them internally to find and match the segments.
+    // Find the hit/nohit markers also to identify the ground-truth letter.
     for(int i=0;i<window*maxtrialsamplelength;i++)
     {
         double ts = inlet.pull_sample(&sample[0],8);
@@ -251,32 +258,35 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
             }
         }
 
+        // Safe break
         if (stimcounter>=160) break;
     }
 
-
+    // Pull the segments according to markers information.
     for(int i=0;i<stimcounter;i++)
     {
         int stim = stims[i];
         printf("\nCopying segment %d into position %d on repetition %d.",stim, stimmarkers[i],counters[stim]);
         //signal[stimmarkers[i] + 200] = 50;signal[stimmarkers[i] + 220] = -5;
         //memcpy(Segments[counters[stim]++][stim],&signal[stimmarkers[i]],256*sizeof(double));
+        memset(&Segments[counters[stim]][stim][0],0,sizeof(double)*256);
+
+        // FIXME DEBUG
+        if (stim == row || stim == col)
+        {
+            Segments[counters[stim]][stim][120] = Segments[counters[stim]][stim][132] = 40;
+            Segments[counters[stim]][stim][128] = -50;
+        } else
 
         for(int j=0;j<window;j++)
         {
-            Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
-
-            // FIXME DEBUG
-            if (stim == row || stim == col)
-            {
-                Segments[counters[stim]][stim][120] = Segments[counters[stim]][stim][132] = 40;
-                Segments[counters[stim]][stim][128] = -50;
-            }
+            //Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
         }
         counters[stim]++;
 
     }
 
+    // Ensemble Average of all the segments, create the image and get the descriptors.
     for(int i=0;i<12;i++)
     {
         printf("\nCounter for stim %d:%d",i,counters[i] );
@@ -321,15 +331,18 @@ int trainspeller() {
     int trials = 5;
 
     float *templates = new float[trials*2*128];
-    float *descriptors = new float[trials*12*128];
+    float *descriptors = new float[12*128];
 
     for(int j=0;j<trials;j++)
     {
         struct SpellerLetter l;
+        memset(descriptors,0,sizeof(float)*12*128);
+
+        // This function returns 12 128-descriptors.
         l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
 
-        memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
-        memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
+        memcpy(&templates[j*2*128],&descriptors[l.row*128],128*sizeof(float));
+        memcpy(&templates[j*2*128+128],&descriptors[l.col*128],128*sizeof(float));
 
     }
 
@@ -339,15 +352,6 @@ int trainspeller() {
     delete [] templates;
 
     return 0;
-}
-
-int udp()
-{
-    int sockfd = createsignalserver();
-    struct SpellerLetter le;
-    le.row = 1;
-    le.col = 1;
-    informresult(sockfd,le.row,le.col);
 }
 
 int onlinespeller() {
@@ -373,7 +377,7 @@ int onlinespeller() {
     for(int j=0;j<trials;j++)
     {
         struct SpellerLetter l;
-        l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
+        l = processtrial(&descriptors[j*12],gammat, Fs, inlet,markersInlet);
 
         //memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
         //memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
@@ -391,4 +395,94 @@ int onlinespeller() {
     delete [] templates;
 
     return 0;
+}
+
+// -- UNIT TESTING
+int udp()
+{
+    int sockfd = createsignalserver();
+    struct SpellerLetter le;
+    le.row = 1;
+    le.col = 1;
+    informresult(sockfd,le.row,le.col);
+}
+
+void trainclassify()
+{
+    float *descr = new float[5*1*12*128];
+    memset(descr,0,sizeof(float)*5*1*12*128);
+
+    for(int i=0;i<10;i++)
+    {
+        double signal[256];
+        memset(signal,0,sizeof(double)*256);
+        signal[120] = signal[132] = 40;
+        signal[128] = -50;
+        //randomSignal(signal,256,20);
+        eegimage(&descr[(0*12+i)*128],signal,256,1,i);
+        printdescriptor (&descr[(0*12+i)*128]);
+    }
+
+    memorize(descr,10);
+
+    delete [] descr;
+}
+
+void testmemory()
+{
+    float *templates = new float[1*1*10*128];
+    memset(templates,0,sizeof(float)*1*1*10*128);
+
+    remember(templates,10);
+
+    for(int i=0;i<10;i++)
+    {
+        printdescriptor(&templates[i*128]);
+        printf("--------\n");
+    }
+
+    delete [] templates;
+
+}
+
+void testclassify()
+{
+    int trials = 1*1;
+
+    float *descr = new float[1*1*12*128];
+    memset(descr,0,sizeof(float)*1*1*12*128);
+
+    for(int j=0;j<trials;j++)
+    {
+        for(int i=0;i<5;i++)
+        {
+            double signal[256];
+            memset(signal,0,sizeof(double)*256);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            printdescriptor (&descr[(j*12+i)*128]);
+        }
+
+        for(int i=5;i<7;i++)
+        {
+            double signal[256];
+            memset(signal,0,sizeof(double)*256);
+            signal[120] = signal[132] = 40;
+            signal[128] = -50;
+            //randomSignal(signal,256,20);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            printdescriptor (&descr[(j*12+i)*128]);
+        }
+
+        for(int i=7;i<12;i++)
+        {
+            double signal[256];
+            memset(signal,0,sizeof(double)*256);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            printdescriptor (&descr[(j*12+i)*128]);
+        }
+
+    }
+
+    sleep(5);
+    struct SpellerLetter le = classifytrial(&descr[1*12]);
 }

@@ -17,5 +17,8 @@ void onlinespeller();
 
 void udp();
 
+void testclassify();
+void trainclassify();
+
 #endif // LSL_H
 

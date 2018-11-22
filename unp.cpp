@@ -112,6 +112,9 @@ void informresult(int sockfd, int row, int col)
 
     while(true)
     {
+        // FIXME: For some extrange reason UDP package arriving here from the client contain a null cliaddr.
+        // this prevented the code to send the response back.  For this reason I had to send a new message to
+        // a server waiting at the peer. Couldn't figure it out the reason. WEIRD.
         //sendto(sockfd, message, strlen(message), 0, (const struct sockaddr *)&goodcliaddr, sizeof(cliaddr));
         send(row,col);
         //printf(".");
