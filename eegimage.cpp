@@ -241,6 +241,10 @@ int eegimage(float *descr,double signal[], int length, int gamma, std::string wi
     calculate_descriptors(descr,image,width,height,1,1,true);
     cvWaitKeyWrapper();
 
+    std::string ext = ".png";
+
+    cv::imwrite(windowname + ext, image );
+
     return 1;
 }
 

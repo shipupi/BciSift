@@ -269,7 +269,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
         printf("\nCopying segment %d into position %d on repetition %d.",stim, stimmarkers[i],counters[stim]);
         //signal[stimmarkers[i] + 200] = 50;signal[stimmarkers[i] + 220] = -5;
         //memcpy(Segments[counters[stim]++][stim],&signal[stimmarkers[i]],256*sizeof(double));
-        memset(&Segments[counters[stim]][stim][0],0,sizeof(double)*256);
+        memset(&Segments[counters[stim]][stim][0],0,sizeof(double)*window);
 
         // FIXME DEBUG
         if (stim == row || stim == col)
@@ -325,7 +325,7 @@ int trainspeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 256;
+    double Fs = 16;256;
     double gammat  =1;
 
     int trials = 5;
@@ -364,7 +364,7 @@ int onlinespeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 256;
+    double Fs = 16;256;
     double gammat  =1;
 
     int trials = 5;
@@ -379,11 +379,8 @@ int onlinespeller() {
         struct SpellerLetter l;
         l = processtrial(&descriptors[j*12],gammat, Fs, inlet,markersInlet);
 
-        //memcpy(&templates[j*2*128],&descriptors[j*12*128+l.row],128*sizeof(float));
-        //memcpy(&templates[j*2*128+128],&descriptors[j*12*128+l.col],128*sizeof(float));
-
-        struct SpellerLetter le = classifytrial(&descriptors[j*12]);
-
+        struct SpellerLetter le;
+        le = classifytrial(&descriptors[j*12]);
 
         informresult(sockfd,le.row,le.col);
 
@@ -397,7 +394,7 @@ int onlinespeller() {
     return 0;
 }
 
-// -- UNIT TESTING
+// -------------------------- UNIT TESTING
 int udp()
 {
     int sockfd = createsignalserver();
