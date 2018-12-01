@@ -35,3 +35,4 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 
 * http://tilomitra.com/opencv-on-mac-osx/
 * http://stackoverflow.com/questions/21811858/opencv-mac-os-x-qt-creator-strange-linking-bug
+* https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/UsingDynamicLibraries.html
