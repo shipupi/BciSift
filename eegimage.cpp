@@ -188,17 +188,34 @@ double mean(double signal[], int length)
     return mn.val[0];
 }
 
+void zscore(double *signal, int length)
+{
+    cv::Mat A(length,1,CV_64F,signal);
+    cv::Scalar mn = cv::mean(A);
+
+    cv::Scalar sdt;
+    cv::meanStdDev(A,mn,sdt);
+
+    for(int i=0;i<length;i++)
+    {
+        if (sdt.val[0] != 0)
+            signal[i] = (signal[i] - mn.val[0])/sdt.val[0];
+    }
+
+}
 
 
-int eegimage(float *descr,double signal[], int length, int gamma, std::string windowname)
+
+int eegimage(float *descr,double signal[], int length, int gammat, int gamma, std::string windowname)
 {
     cv::namedWindow(windowname,cv::WINDOW_NORMAL);
 
     int height;
     int width;
 
+    // FIXME: Adjust height accordingly.
     height = 240;
-    width = length;
+    width = length * gammat;
 
     cv::Mat image(height,width,CV_8U,cv::Scalar(0));
     cv::Scalar color(255,255,255);
@@ -209,12 +226,15 @@ int eegimage(float *descr,double signal[], int length, int gamma, std::string wi
 
     double avg = mean(signal,length);
 
-    for(idx=0;idx<width-1;idx++)
+    zscore(signal,length);
+
+    for(idx=0;idx<length-1;idx++)
     {
         //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
 
-        double value = zerolevel+(int)(signal[idx]*gamma) - (int)avg-1;
-        double valuenext = zerolevel+(int)(signal[idx+1]*gamma) - (int)avg-1;
+        // FIXME: Substract the average and calculate the z-score.
+        double value = zerolevel+(int)(signal[idx]*gamma)-1;// - (int)avg-1;
+        double valuenext = zerolevel+(int)(signal[idx+1]*gamma)-1;// - (int)avg-1;
 
         if (value<0) value = 1;
         if (value>height) value = (height-1);
@@ -222,10 +242,8 @@ int eegimage(float *descr,double signal[], int length, int gamma, std::string wi
         if (valuenext<0) valuenext = 1;
         if (valuenext>height) valuenext = (height-1);
 
-        //std::cout<<"Idx:" << idx << std::endl;
-
-        cv::Point pt1(idx,value);
-        cv::Point pt2(idx+1,valuenext);
+        cv::Point pt1( (idx) * gammat,value);
+        cv::Point pt2( (idx+1) * gammat,valuenext);
 
         // Draw a new line between pt1 and pt2.  The line routine uses Brasenham algorithm.
         cv::line(image, pt1, pt2,color);
@@ -248,24 +266,24 @@ int eegimage(float *descr,double signal[], int length, int gamma, std::string wi
     return 1;
 }
 
-int eegimage(float *descr,double signal[],int length, int gamma,int windowlabelid)
+int eegimage(float *descr,double signal[],int length, int gammat, int gamma,int windowlabelid)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
     char buff[100];
     snprintf(buff, sizeof(buff), "%d", windowlabelid+1);
     std::string windowname = buff;
-    int ret = eegimage(descr,signal,length,gamma, windowname);
+    int ret = eegimage(descr,signal,length,gammat, gamma, windowname);
 
     cv::moveWindow(windowname, 300*(windowlabelid % 4),10+250*(windowlabelid / 4));
 
     return ret;
 }
 
-int eegimage(double signal[],int length, int gamma,int label)
+int eegimage(double signal[],int length, int gammat, int gamma,int label)
 {
     float descr[128];
-    return eegimage(descr,signal,length, gamma,label);
+    return eegimage(descr,signal,length,gammat, gamma,label);
 }
 
 
