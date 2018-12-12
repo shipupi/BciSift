@@ -119,7 +119,6 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
     //setverbose(10);
 
     filt = vl_sift_new (width, height, 1, 3, 0) ; // M is width
-    //vl_dsift_process(filter, &img[0]);
 
     int err   = vl_sift_process_first_octave (filt, (const vl_sift_pix *)&img[0]) ;
     if (err) {
@@ -256,7 +255,7 @@ int eegimage(float *descr,double signal[], int length, int gammat, int gamma, st
 
     std::cout << "-------------" << std::endl;
 
-    calculate_descriptors(descr,image,width,height,1,1,true);
+    calculate_descriptors(descr,image,width,height,3,3,true);
     cvWaitKeyWrapper();
 
     std::string ext = ".png";

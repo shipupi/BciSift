@@ -169,7 +169,7 @@ int receivingsignal() {
 }
 
 
-struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
+struct SpellerLetter processtrial(float *descr,double gammat, double gamma,double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
 {
     // receive data & time stamps forever (not displaying them here)
     float sample[8];
@@ -305,7 +305,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
             sign[j] = avg/(counters[i]*1.0F);
         }
 
-        eegimage(&descr[i*128],sign,window, gammat,10,i);
+        eegimage(&descr[i*128],sign,window, gammat,gamma,i);
 
     }
 
@@ -328,7 +328,8 @@ int trainspeller() {
     stream_inlet inlet(results[0]);
 
     double Fs = 10;16;256;
-    double gammat  =4;
+    double gammat  =6;
+    double gamma = 10;
 
     int trials = 5;
 
@@ -341,7 +342,7 @@ int trainspeller() {
         memset(descriptors,0,sizeof(float)*12*128);
 
         // This function returns 12 128-descriptors.
-        l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
+        l = processtrial(descriptors,gammat,gamma, Fs, inlet,markersInlet);
 
         memcpy(&templates[j*2*128],&descriptors[l.row*128],128*sizeof(float));
         memcpy(&templates[j*2*128+128],&descriptors[l.col*128],128*sizeof(float));
@@ -367,7 +368,8 @@ int onlinespeller() {
     stream_inlet inlet(results[0]);
 
     double Fs = 10;16;256;
-    double gammat  =4;
+    double gammat  =6;
+    double gamma = 10;
 
     int trials = 5;
 
@@ -379,7 +381,7 @@ int onlinespeller() {
     for(int j=0;j<trials;j++)
     {
         struct SpellerLetter l;
-        l = processtrial(&descriptors[j*12],gammat, Fs, inlet,markersInlet);
+        l = processtrial(&descriptors[j*12],gammat,gamma, Fs, inlet,markersInlet);
 
         struct SpellerLetter le;
         le = classifytrial(&descriptors[j*12]);
