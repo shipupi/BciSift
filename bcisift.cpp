@@ -136,7 +136,7 @@ result featuredetector(cv::Mat image, const int imageheight, const int imagewidt
     }
 
     cv::imshow("FAST", featureImage);
-    //cv::imwrite("fast.png", featureImage);
+    cv::imwrite("fast.png", featureImage);
 
     result r;
 
@@ -181,7 +181,7 @@ result surf(cv::Mat image, const int imageheight, const int imagewidth, std::vec
 
 
     cv::imshow("SURF", featureImage);
-    //cv::imwrite("surf.png",featureImage);
+    cv::imwrite("surf.png",featureImage);
 
     result r;
 
@@ -216,7 +216,7 @@ result sift(cv::Mat image, const int imageheight, const int imagewidth, int edge
                        cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
     cv::imshow("SIFT", featureImage);
-    //cv::imwrite("sift.png",featureImage);
+    cv::imwrite("sift.png",featureImage);
 
     int hits=0;
     for(int p=0;p<event.size();p++)
@@ -353,7 +353,7 @@ int bcisift(int option)
         {
             result r;
 
-            //cv::imwrite("base.png", image);
+            cv::imwrite("base.png", image);
 
 
             switch (option)
@@ -379,6 +379,7 @@ int bcisift(int option)
 
             cv::Mat image2(imageheight,imagewidth,CV_8U,cv::Scalar(0));
             image = image2;
+
             idx=3;
             cv::Point pt4(1,100);
             cv::Point pt5(1+timestep,100);
@@ -420,6 +421,7 @@ int bcisift(int option)
 
         }
 
+
         // Use me to log the time "t" (y position)
         //std::cout << idx << std::endl;
 
@@ -427,7 +429,7 @@ int bcisift(int option)
 
     }
 
-    //cv::imwrite("output.bmp", image);
+    //cv::imwrite("output.png", image);
 
     return 1;
 }
@@ -519,7 +521,7 @@ int mai2n( int argc, char** argv )
 
 
 
-int madsin(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     //std::string imagename = "HappyFish.jpg";
     //cv::Mat image = cv::imread(imagename,CV_LOAD_IMAGE_COLOR);
