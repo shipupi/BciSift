@@ -108,7 +108,26 @@ int madin(int argc, char *argv[])
 }
 
 
+void testsignals()
+{
+    double signal[256];
+    memset(signal,0,sizeof(double)*256);
+    signal[120] = signal[132] = 40;
+    signal[128] = -50;
+    //randomSignal(signal,256,20);
 
+    for(int i=0;i<256;i++)
+    {
+        std::cout << signal[i] << std::endl;
+    }
+
+    zscore(signal,256);
+
+    for(int i=0;i<256;i++)
+    {
+        std::cout << signal[i] << std::endl;
+    }
+}
 
 
 
@@ -166,6 +185,10 @@ int mainkk( int argc, char **argv)
     {
         trainclassify();
     }
+    else if (strcmp(argv[1],"testsignals")==0)
+    {
+        testsignals();
+    }
     else if (strcmp(argv[1],"rand")==0)
     {
         //float descr[20][128];
@@ -178,7 +201,7 @@ int mainkk( int argc, char **argv)
             {
                 double signal[256];
                 memset(signal,0,sizeof(double)*256);
-                eegimage(&descr[(j*12+i)*128],signal,256,1,1);
+                eegimage(&descr[(j*12+i)*128],signal,256,1,1,1);
             }
 
             for(int i=6;i<12;i++)
@@ -188,7 +211,8 @@ int mainkk( int argc, char **argv)
                 signal[120] = signal[132] = 40;
                 signal[128] = -50;
                 //randomSignal(signal,256,20);
-                eegimage(&descr[(j*12+i)*128],signal,256,1,1);
+
+                eegimage(&descr[(j*12+i)*128],signal,256,1,1,1);
             }
         }
 

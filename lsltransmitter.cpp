@@ -110,7 +110,7 @@ int receiving() {
             signal[i]=sample[0];
         }
 
-        eegimage(signal,256,1,1);
+        eegimage(signal,256,1,1,1);
     }
 
 
@@ -161,7 +161,7 @@ int receivingsignal() {
                 printf ("%10.8f:%10.8f:Marker %10.8f\n",ts,mts,marker);
         }
 
-        eegimage(signal,256, 10,1);
+        eegimage(signal,256, 10,1,1);
 
     }
 
@@ -169,7 +169,7 @@ int receivingsignal() {
 }
 
 
-struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
+struct SpellerLetter processtrial(float *descr,double gammat, double gamma,double Fs, stream_inlet &inlet, stream_inlet &markersInlet)
 {
     // receive data & time stamps forever (not displaying them here)
     float sample[8];
@@ -195,7 +195,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
 
     memset(counters,0,12*sizeof(int));
     memset(signal,0,window*maxtrialsamplelength*sizeof(double));
-    memset(Segments,0,15*12*Fs*sizeof(double));
+    memset(Segments,0,15*12*window*sizeof(double));
 
     // First wait until the trial-start mark arrives.  Discard everything.
     while(true)
@@ -220,6 +220,8 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
     {
         double ts = inlet.pull_sample(&sample[0],8);
         //printf ("%10.8f:%10.8f\n",ts,sample[0]);
+
+        // FIXME Multichannel (or at least channel-by-channel)
         signal[i]=sample[0];
 
         double mts = markersInlet.pull_sample(&marker,1,0.0f);
@@ -241,7 +243,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
                 int stim = (int)marker - 33025;
                 printf ("- Stim: %d.",ts,mts,marker,stim);
                 stims[stimcounter]=stim;
-                stimmarkers[stimcounter] = (int)((mts-tsoffset)*window*gammat);
+                stimmarkers[stimcounter] = (int)((mts-tsoffset)*window);
                 stimcounter++;
 
                 if (hit && stim<=5)
@@ -274,13 +276,13 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
         // FIXME DEBUG
         if (stim == row || stim == col)
         {
-            Segments[counters[stim]][stim][120] = Segments[counters[stim]][stim][132] = 40;
-            Segments[counters[stim]][stim][128] = -50;
+            //Segments[counters[stim]][stim][window-10] = Segments[counters[stim]][stim][window-5] = 40;
+            //Segments[counters[stim]][stim][128] = -50;
         } else
 
         for(int j=0;j<window;j++)
         {
-            //Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
+            Segments[counters[stim]][stim][j] = signal[stimmarkers[i]+j];
         }
         counters[stim]++;
 
@@ -303,7 +305,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double Fs, stream_
             sign[j] = avg/(counters[i]*1.0F);
         }
 
-        eegimage(&descr[i*128],sign,window, 10,i);
+        eegimage(&descr[i*128],sign,window, gammat,gamma,i);
 
     }
 
@@ -325,8 +327,9 @@ int trainspeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 16;256;
-    double gammat  =1;
+    double Fs = 10;16;256;
+    double gammat  =6;
+    double gamma = 10;
 
     int trials = 5;
 
@@ -339,7 +342,7 @@ int trainspeller() {
         memset(descriptors,0,sizeof(float)*12*128);
 
         // This function returns 12 128-descriptors.
-        l = processtrial(descriptors,gammat, Fs, inlet,markersInlet);
+        l = processtrial(descriptors,gammat,gamma, Fs, inlet,markersInlet);
 
         memcpy(&templates[j*2*128],&descriptors[l.row*128],128*sizeof(float));
         memcpy(&templates[j*2*128+128],&descriptors[l.col*128],128*sizeof(float));
@@ -364,8 +367,9 @@ int onlinespeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 16;256;
-    double gammat  =1;
+    double Fs = 10;16;256;
+    double gammat  =6;
+    double gamma = 10;
 
     int trials = 5;
 
@@ -377,7 +381,7 @@ int onlinespeller() {
     for(int j=0;j<trials;j++)
     {
         struct SpellerLetter l;
-        l = processtrial(&descriptors[j*12],gammat, Fs, inlet,markersInlet);
+        l = processtrial(&descriptors[j*12],gammat,gamma, Fs, inlet,markersInlet);
 
         struct SpellerLetter le;
         le = classifytrial(&descriptors[j*12]);
@@ -416,7 +420,7 @@ void trainclassify()
         signal[120] = signal[132] = 40;
         signal[128] = -50;
         //randomSignal(signal,256,20);
-        eegimage(&descr[(0*12+i)*128],signal,256,1,i);
+        eegimage(&descr[(0*12+i)*128],signal,256,1,1,i);
         printdescriptor (&descr[(0*12+i)*128]);
     }
 
@@ -455,7 +459,7 @@ void testclassify()
         {
             double signal[256];
             memset(signal,0,sizeof(double)*256);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
@@ -466,7 +470,7 @@ void testclassify()
             signal[120] = signal[132] = 40;
             signal[128] = -50;
             //randomSignal(signal,256,20);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
@@ -474,7 +478,7 @@ void testclassify()
         {
             double signal[256];
             memset(signal,0,sizeof(double)*256);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
