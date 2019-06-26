@@ -141,7 +141,7 @@ void testsignals()
  * export LD_LIBRARY_PATH=/Users/user/work/labstreaminglayer/build/install/lsl_Release/LSL/lib/
  * LD_LIBRARY_PATH=/Users/rramele/work/labstreaminglayer/build/install/LSL/lib
  */
-int mainkk( int argc, char **argv)
+int main( int argc, char **argv)
 {
     //comparesignals(1,31,2,1,1,231,2,1);
     //comparehits();

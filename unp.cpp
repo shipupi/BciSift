@@ -64,7 +64,7 @@ void send(int row, int col)
     // Filling server information
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(7788);
-    inet_pton(AF_INET, "10.17.2.35", &(servaddr.sin_addr));
+    inet_pton(AF_INET, "10.17.2.67", &(servaddr.sin_addr));
 
     sendto(sockfd, message, strlen(message), 0, (const struct sockaddr *)&servaddr, sizeof(servaddr));
 

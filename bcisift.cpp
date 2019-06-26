@@ -469,7 +469,7 @@ int showLine(std::string imagename)
 }
 
 /** @function main */
-int mai2n( int argc, char** argv )
+int sobelmain( int argc, char** argv )
 {
 
   cv::Mat src, src_gray;
@@ -521,7 +521,7 @@ int mai2n( int argc, char** argv )
 
 
 
-int main(int argc, char *argv[])
+int bcisiftmain(int argc, char *argv[])
 {
     //std::string imagename = "HappyFish.jpg";
     //cv::Mat image = cv::imread(imagename,CV_LOAD_IMAGE_COLOR);
