@@ -327,7 +327,7 @@ int trainspeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 10;16;256;
+    double Fs = 16;10;16;256;
     double gammat  =6;
     double gamma = 10;
 
@@ -367,7 +367,7 @@ int onlinespeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 10;16;256;
+    double Fs = 16;10;16;256;
     double gammat  =6;
     double gamma = 10;
 
