@@ -10,9 +10,7 @@
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 
-
-#include <QGlobal.h>
-#include <QTime>
+#include "time.h"
 
 #include "plotprocessing.h"
 #include "dsp.h"
@@ -22,7 +20,7 @@
 int randInt(int low, int high)
     {
     // Random number between low and high
-    return qrand() % ((high + 1) - low) + low;
+    return rand() % ((high + 1) - low) + low;
 }
 
 
@@ -535,8 +533,10 @@ int bcisiftmain(int argc, char *argv[])
 
     //salt(image, 3000);
 
-    QTime time = QTime::currentTime();
-    qsrand((uint)time.msec());
+    //QTime time = QTime::currentTime();
+    //qsrand((uint)time.msec());
+
+    srand(time(NULL));
 
     int option=0;
 

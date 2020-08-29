@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include <QGlobal.h>
+#include <qglobal.h>
 #include <QTime>
 
 #include "eegimage.h"
@@ -147,6 +147,12 @@ int main( int argc, char **argv)
     //comparehits();
     //process();
     //testdsp();
+
+    if (argc < 2)
+    {
+        std::cout << "bcisift send | recv | randonline | train | online | udp | testclassify | trainclassify | testsignals | rand " << std::endl;
+        return -1;
+    }
 
 
     if (strcmp(argv[1],"send")==0)

@@ -13,9 +13,6 @@
 #include <opencv2/ml.hpp>
 
 
-#include <QGlobal.h>
-#include <QTime>
-
 #include "serializer.h"
 #include "spellerletter.h"
 

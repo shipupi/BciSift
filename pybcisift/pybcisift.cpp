@@ -1,6 +1,13 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+#include "../eegimage.h"
+
 
 static PyObject *
 pybcisift_extract(PyObject *self, PyObject *args)
@@ -10,7 +17,16 @@ pybcisift_extract(PyObject *self, PyObject *args)
 
     if (!PyArg_ParseTuple(args, "s", &command))
         return NULL;
-    sts = system(command);
+    //sts = system(command);
+    float descr[128];
+    double signal[256];
+    memset(signal,0,sizeof(double)*256);
+    signal[120] = signal[132] = 40;
+    signal[128] = -50;
+
+    eegimage(&descr[0],signal,256,1,1,1);
+
+    sts = 3;
     return Py_BuildValue("i", sts);
 }
 
@@ -63,3 +79,4 @@ main(int argc, char *argv[])
     PyMem_RawFree(program);
     return 0;
 }
+

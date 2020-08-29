@@ -11,8 +11,8 @@ using namespace lsl;
 
 /**
  * This code simulates the sending of lsl EEG stream with markers.
- * *
- * /
+ *
+ *
  */
 
 int sendeegandmarkers() {
@@ -38,7 +38,7 @@ int sendeegandmarkers() {
     while(true) {
         double ts = 1.12;
 
-        forwardsample[0] = ts;
+        //forwardsample[0] = ts;
 
         // generate random data
         for (int c=0;c<8;c++)

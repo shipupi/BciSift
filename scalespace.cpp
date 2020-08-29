@@ -11,9 +11,6 @@
 #include <opencv2/xfeatures2d.hpp>
 
 
-#include <QGlobal.h>
-#include <QTime>
-
 
 
 /**

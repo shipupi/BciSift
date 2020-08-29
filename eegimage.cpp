@@ -7,9 +7,6 @@
 
 #include <opencv2/features2d/features2d.hpp>
 
-#include <QGlobal.h>
-#include <QTime>
-
 #include "vl/sift.h"
 #include "vl/mathop.h"
 

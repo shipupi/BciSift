@@ -15,6 +15,12 @@ CONFIG   -= app_bundle
 # Evita los errores de auto header en las cabeceras tipo c++11
 CONFIG += c++14
 
+#TEMPLATE = lib
+#SOURCES += test.cpp
+#HEADERS += test.h
+#DEFINES += MAKE_TEST_LIB
+#QT += widgets
+
 TEMPLATE = app
 
 QMAKE_MAC_SDK = macosx10.14
