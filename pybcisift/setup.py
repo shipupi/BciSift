@@ -32,7 +32,7 @@ module1 = Extension('pybcisift',
                     '../serializer.cpp',
                     '../unp.cpp'])
 
-setup (name = 'PackageName',
+setup (name = 'pybcisift',
        version = '1.0',
        description = 'BciSift Routine for python',
        author = 'Rodrigo Ramele',

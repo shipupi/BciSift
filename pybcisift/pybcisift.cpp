@@ -15,19 +15,76 @@ pybcisift_extract(PyObject *self, PyObject *args)
     const char *command;
     int sts;
 
-    if (!PyArg_ParseTuple(args, "s", &command))
-        return NULL;
+    PyObject* seq;
+    int seqlen;
+    int i;
+
+    //if (!PyArg_ParseTuple(args, "s", &command))
+    //    return NULL;
+
+
     //sts = system(command);
+
+    /* get one argument as a sequence */
+    if(!PyArg_ParseTuple(args, "O", &seq))
+        return 0;
+    seq = PySequence_Fast(seq, "argument must be iterable");
+    if(!seq)
+        return 0;
+
+
     float descr[128];
     double signal[256];
+    
     memset(signal,0,sizeof(double)*256);
     signal[120] = signal[132] = 40;
     signal[128] = -50;
 
+    /* prepare data as an array of doubles */
+    seqlen = PySequence_Fast_GET_SIZE(seq);
+    //if(!dbar) {
+    //    Py_DECREF(seq);
+    //    return PyErr_NoMemory(  );
+    //}
+    for(i=0; i < seqlen; i++) {
+        PyObject *fitem;
+        PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
+        if(!item) {
+            Py_DECREF(seq);
+            return 0;
+        }
+        fitem = PyNumber_Float(item);
+        if(!fitem) {
+            Py_DECREF(seq);
+            PyErr_SetString(PyExc_TypeError, "all items must be numbers");
+            return 0;
+        }
+        signal[i] = PyFloat_AS_DOUBLE(fitem);
+        Py_DECREF(fitem);
+    }    
+
+    /* clean up, compute, and return result */
+    Py_DECREF(seq);
+
     eegimage(&descr[0],signal,256,1,1,1);
 
-    sts = 3;
-    return Py_BuildValue("i", sts);
+
+    int N=128;
+    PyObject* python_val = PyList_New(N);
+    for (int i = 0; i < N; ++i)
+    {
+        PyObject* pv = Py_BuildValue("f", descr[i]);
+        PyList_SetItem(python_val, i, pv);
+    }
+
+
+    return python_val;
+
+
+
+
+    //sts = 3;
+    //return Py_BuildValue("i", sts);
 }
 
 static PyMethodDef SpamMethods[] = {
@@ -79,4 +136,3 @@ main(int argc, char *argv[])
     PyMem_RawFree(program);
     return 0;
 }
-

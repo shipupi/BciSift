@@ -788,9 +788,6 @@ eegimage.o: eegimage.cpp /usr/local/include/opencv2/core/core.hpp \
 		/usr/local/include/opencv2/flann/miniflann.hpp \
 		/usr/local/include/opencv2/flann/defines.h \
 		/usr/local/include/opencv2/flann/config.h \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QGlobal.h \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QTime \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		../vlfeat/vl/sift.h \
 		../vlfeat/vl/generic.h \
 		../vlfeat/vl/host.h \
@@ -852,10 +849,7 @@ scalespace.o: scalespace.cpp /usr/local/include/opencv2/core/core.hpp \
 		/usr/local/include/opencv2/flann/defines.h \
 		/usr/local/include/opencv2/flann/config.h \
 		/usr/local/include/opencv2/xfeatures2d.hpp \
-		/usr/local/include/opencv2/xfeatures2d/nonfree.hpp \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QGlobal.h \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QTime \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/qdatetime.h
+		/usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o scalespace.o scalespace.cpp
 
 plotprocessing.o: plotprocessing.cpp /usr/local/include/opencv2/core/core.hpp \
@@ -908,9 +902,6 @@ plotprocessing.o: plotprocessing.cpp /usr/local/include/opencv2/core/core.hpp \
 		/usr/local/include/opencv2/xfeatures2d/nonfree.hpp \
 		/usr/local/include/opencv2/ml.hpp \
 		/usr/local/include/opencv2/ml/ml.inl.hpp \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QGlobal.h \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QTime \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		serializer.h \
 		../opencv/include/opencv2/opencv.hpp \
 		/usr/local/include/opencv2/calib3d.hpp \
