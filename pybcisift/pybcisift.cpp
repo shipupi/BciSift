@@ -66,7 +66,7 @@ pybcisift_extract(PyObject *self, PyObject *args)
     /* clean up, compute, and return result */
     Py_DECREF(seq);
 
-    eegimage(&descr[0],signal,256,1,1,1);
+    eegimage(&descr[0],signal,256,256,1,1,true,1);
 
 
     int N=128;
