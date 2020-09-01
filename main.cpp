@@ -2,13 +2,11 @@
 #include <fstream>
 #include <string>
 
-#include <qglobal.h>
-#include <QTime>
-
 #include "eegimage.h"
 #include "lsl.h"
 #include "plotprocessing.h"
 #include "decoder.h"
+#include "dsp.h"
 
 
 int  eeglogger(char *filename, char *subject, int duration);
@@ -16,7 +14,7 @@ int  eeglogger(char *filename, char *subject, int duration);
 int randInt2(int low, int high)
     {
     // Random number between low and high
-    return qrand() % ((high + 1) - low) + low;
+    return rand() % ((high + 1) - low) + low;
 }
 
 void randomSignal(double *signal, int window, int variance)
@@ -41,8 +39,7 @@ int madin(int argc, char *argv[])
 
     //salt(image, 3000);
 
-    QTime time = QTime::currentTime();
-    qsrand((uint)time.msec());
+    srand(time(NULL));
 
     int option=0;
 
@@ -183,6 +180,10 @@ int main( int argc, char **argv)
     {
         udp();
     }
+    else if (strcmp(argv[1],"dsp")==0)
+    {
+        testdsp();
+    }
     else if (strcmp(argv[1],"testclassify")==0)
     {
         testclassify();
@@ -194,6 +195,28 @@ int main( int argc, char **argv)
     else if (strcmp(argv[1],"testsignals")==0)
     {
         testsignals();
+    }
+    else if (strcmp(argv[1],"signal")==0)
+    {
+        float *descr = new float[128];
+
+        int N =256;
+        int Fs = 256;
+        double signal[N];
+        memset(signal,0,sizeof(double)*N);
+        signal[128] = 20;
+        signal[120] = signal[136] = -120;
+        //randomSignal(signal,512,20);
+
+        eegimage(&descr[0],signal,N,240,1,1,false,1);
+        std::string dummy;
+        std::getline(std::cin, dummy);
+
+        printdescriptor(descr);
+
+        for(int i=0;i<128;i++)
+            printf("[%6.2f]\n", descr[i]);
+
     }
     else if (strcmp(argv[1],"rand")==0)
     {
@@ -207,7 +230,9 @@ int main( int argc, char **argv)
             {
                 double signal[256];
                 memset(signal,0,sizeof(double)*256);
-                eegimage(&descr[(j*12+i)*128],signal,256,1,1,1);
+                signal[120] = signal[132] = 2*40;
+                signal[128] = -50*2;
+                eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,1);
             }
 
             for(int i=6;i<12;i++)
@@ -218,7 +243,7 @@ int main( int argc, char **argv)
                 signal[128] = -50;
                 //randomSignal(signal,256,20);
 
-                eegimage(&descr[(j*12+i)*128],signal,256,1,1,1);
+                eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,1);
             }
         }
 

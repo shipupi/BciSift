@@ -67,7 +67,7 @@ printdescriptor (float *descr)
     int jp = BP - 1 - j ;
     for (i = 0 ; i < BP ; ++i) {
       for (t = 0 ; t < BO ; ++t) {
-        printf("[%6.2f]  ", descr[BP*j+BP*i+t]);
+        printf("[%6.2f]  ", descr[BP*BP*j+BP*i+t]);
       }
       printf("\n");
     }
@@ -104,7 +104,7 @@ void cvWaitKeyWrapper()
     }
 }
 
-void calculate_descriptors(float *descr,cv::Mat image, int width, int height,double Sx, double Sy, bool floatDescriptors )
+void calculate_descriptors(float *descr,cv::Mat image, int width, int height,double St, double Sv, int x_kp, int y_kp, bool floatDescriptors )
 {
     VlSiftFilt        *filt ;
     std::vector<float> img;
@@ -132,15 +132,15 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
     VlSiftKeypoint        ik ;
     VlSiftKeypoint        *k ;
     double            *ikeys = 0 ;
-    //bool floatDescriptors = true;
-    //double descr[128];
 
+
+    // @FIXME, the BIN center location depends on the scale.  This should be modified in this implementation.
     vl_sift_keypoint_init (filt, &ik,
-                           width/2-1,
-                           height/2-1,
-                           1) ;
-    ik.sigmax = Sx;
-    ik.sigmay = Sy;
+                           x_kp-1,
+                           y_kp-1,
+                           St) ;  // FIXME, St or Sv ???
+    ik.sigmax = St;
+    ik.sigmay = Sv;
 
     k = &ik ;
 
@@ -173,7 +173,7 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
 void calculate_descriptors(cv::Mat image)
 {
     float descr[128];
-    calculate_descriptors(descr, image, imagewidth, imageheight, 1, 1, true);
+    calculate_descriptors(descr, image, imagewidth, imageheight, 1, 1, imagewidth/2, imageheight/2, true);
 }
 
 double mean(double signal[], int length)
@@ -182,6 +182,26 @@ double mean(double signal[], int length)
     cv::Scalar mn = cv::mean(A);
 
     return mn.val[0];
+}
+
+double max(double signal[], int length)
+{
+    cv::Mat A(length, 1, CV_64F, signal);
+    double minVal;
+    double maxVal;
+    cv::minMaxLoc(A,&minVal, &maxVal);
+
+    return maxVal;
+}
+
+double min(double signal[], int length)
+{
+    cv::Mat A(length, 1, CV_64F, signal);
+    double minVal;
+    double maxVal;
+    cv::minMaxLoc(A,&minVal, &maxVal);
+
+    return minVal;
 }
 
 void zscore(double *signal, int length)
@@ -202,27 +222,46 @@ void zscore(double *signal, int length)
 
 
 
-int eegimage(float *descr,double signal[], int length, int gammat, int gamma, std::string windowname)
+int eegimage(float *descr,double signal[], int defaultheight, int length, int gammat, int gamma, bool normalize, std::string windowname)
 {
     cv::namedWindow(windowname,cv::WINDOW_NORMAL);
 
     int height;
     int width;
+    int zerolevel=floor(  abs(min(signal, length))     );
+
+    if (normalize)
+    {
+        zscore(signal,length);
+    }
 
     // FIXME: Adjust height accordingly.
-    height = 240;
+
+    printf("Signal Length %d, Defaultheight = %d\n", length, defaultheight);
+
+    height = round(gamma * max(signal,length)) - round( gamma * min(signal, length));
+    height *= 2;zerolevel = height/2;
+    if (height < defaultheight)
+    {
+        height = defaultheight;
+        zerolevel = height/2;
+    }
+
     width = length * gammat;
+
+    printf("Height, Width: %d, %d\n", height, width);
+    printf("Zerolevel: %d\n", zerolevel);
 
     cv::Mat image(height,width,CV_8U,cv::Scalar(0));
     cv::Scalar color(255,255,255);
 
     int idx = 1;
 
-    int zerolevel=height/2;
+
 
     double avg = mean(signal,length);
 
-    zscore(signal,length);
+
 
     for(idx=0;idx<length-1;idx++)
     {
@@ -246,13 +285,54 @@ int eegimage(float *descr,double signal[], int length, int gammat, int gamma, st
     }
 
 
+    std::cout << "-------------" << std::endl;
+
+    double deltaS = sqrt(2.0) * 3.0 * 5.0;
+
+    double St = 3;
+    double Sv = 3;
+
+    double delta_uV=0;
+    double delta_uV_min = abs(round( min(signal, length) ));
+    double delta_uV_max = abs(round( max(signal, length) ));
+
+    if (delta_uV_min > delta_uV_max)
+        delta_uV = delta_uV_min;
+    else
+        delta_uV = delta_uV_max;
+
+    Sv = (delta_uV*2 * gamma) / deltaS;
+    St = ( (length-11) * gammat)  / deltaS;
+
+    if (Sv < 1)
+        Sv = 1;
+
+
+    int x_kp = width/2;
+    int y_kp = zerolevel;
+
+    printf("Sv = %10.5f, St = %10.5f \n",Sv, St);
+
+    calculate_descriptors(descr,image,width,height,St,Sv,x_kp, y_kp, true);
+
+    // Show patch geometry
+    double Sx = floor( deltaS * St) + 1;
+    double Sy = floor( deltaS * Sv) + 1;
+
+    cv::Scalar patchcolor(190,190,190);
+    cv::Point pt1(x_kp - Sx/2, y_kp-Sy/2);
+    cv::Point pt2(x_kp - Sx/2 ,y_kp+Sy/2);
+    cv::Point pt3(x_kp + Sx/2, y_kp+Sy/2);
+    cv::Point pt4(x_kp + Sx/2, y_kp-Sy/2);
+    cv::line(image, pt1, pt2, patchcolor);
+    cv::line(image, pt2, pt3, patchcolor);
+    cv::line(image, pt3, pt4, patchcolor);
+    cv::line(image, pt1, pt4, patchcolor);
+
+
     // The Window Name must be the same.
     cv::imshow(windowname, image);
 
-
-    std::cout << "-------------" << std::endl;
-
-    calculate_descriptors(descr,image,width,height,3,3,true);
     cvWaitKeyWrapper();
 
     std::string ext = ".png";
@@ -262,24 +342,24 @@ int eegimage(float *descr,double signal[], int length, int gammat, int gamma, st
     return 1;
 }
 
-int eegimage(float *descr,double signal[],int length, int gammat, int gamma,int windowlabelid)
+int eegimage(float *descr,double signal[],int defaultheight, int length, int gammat, int gamma,bool normalize,int windowlabelid)
 {
     // 1 La imagen queda igual
     // 2 La imagen se ajusta a toda la pantalla y se resizea.
     char buff[100];
     snprintf(buff, sizeof(buff), "%d", windowlabelid+1);
     std::string windowname = buff;
-    int ret = eegimage(descr,signal,length,gammat, gamma, windowname);
+    int ret = eegimage(descr,signal,length,defaultheight, gammat, gamma, normalize, windowname);
 
     cv::moveWindow(windowname, 300*(windowlabelid % 4),10+250*(windowlabelid / 4));
 
     return ret;
 }
 
-int eegimage(double signal[],int length, int gammat, int gamma,int label)
+int eegimage(double signal[],int length, int Fs, int gammat, int gamma,bool normalize, int label)
 {
     float descr[128];
-    return eegimage(descr,signal,length,gammat, gamma,label);
+    return eegimage(descr,signal,length,Fs, gammat, gamma,normalize,label);
 }
 
 

@@ -76,7 +76,7 @@ result handmadesift(cv::Mat image, const int imageheight, const int imagewidth, 
                 double radi=10;
                 cv::circle(image,extrema[i],radi,color);
 
-                for(int k=0;k<event.size();k++)
+                for(unsigned int k=0;k<event.size();k++)
                 {
                     if ( ((event[k]-thresh)<extrema[i].y) && (extrema[i].y<event[k]+thresh) )
                     {
@@ -122,9 +122,9 @@ result featuredetector(cv::Mat image, const int imageheight, const int imagewidt
                        cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
     int hits=0;
-    for(int p=0;p<event.size();p++)
+    for(unsigned int p=0;p<event.size();p++)
     {
-        for(int k=0;k<keypoints.size();k++)
+        for(unsigned int k=0;k<keypoints.size();k++)
         {
             if ( ((event[p]-thresh)<keypoints[k].pt.y) && (keypoints[k].pt.y<event[p]+thresh) )
             {
@@ -217,10 +217,10 @@ result sift(cv::Mat image, const int imageheight, const int imagewidth, int edge
     cv::imwrite("sift.png",featureImage);
 
     int hits=0;
-    for(int p=0;p<event.size();p++)
+    for(unsigned int p=0;p<event.size();p++)
     {
         std::cout << "Event at:" << event[p] << std::endl;
-        for(int k=0;k<keypoints.size();k++)
+        for(unsigned int k=0;k<keypoints.size();k++)
         {
             std::cout <<  "Event:" << event[p]-thresh << std::endl;
             std::cout  << "Keypoint:" <<  keypoints[k].pt.x << std::endl;
@@ -476,8 +476,6 @@ int sobelmain( int argc, char** argv )
   int scale = 1;
   int delta = 0;
   int ddepth = CV_16S;
-
-  int c;
 
   /// Load an image
   src = cv::imread( argv[1] );

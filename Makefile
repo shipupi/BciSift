@@ -732,14 +732,12 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-main.o: main.cpp ../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/qglobal.h \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/QTime \
-		../../Qt/5.11.1/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
-		eegimage.h \
+main.o: main.cpp eegimage.h \
 		lsl.h \
 		plotprocessing.h \
 		spellerletter.h \
-		decoder.h
+		decoder.h \
+		dsp.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 eegimage.o: eegimage.cpp /usr/local/include/opencv2/core/core.hpp \

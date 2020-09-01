@@ -102,6 +102,7 @@ int receiving() {
 
     while (true)
     {
+        int Fs=256;
         double signal[256];
         for(int i=0;i<256;i++)
         {
@@ -110,7 +111,7 @@ int receiving() {
             signal[i]=sample[0];
         }
 
-        eegimage(signal,256,1,1,1);
+        eegimage(signal,256,Fs,1,1,true,1);
     }
 
 
@@ -149,6 +150,7 @@ int receivingsignal() {
     float marker;
     while (true)
     {
+        int Fs = 256;
         double signal[256];
         for(int i=0;i<256;i++)
         {
@@ -161,7 +163,7 @@ int receivingsignal() {
                 printf ("%10.8f:%10.8f:Marker %10.8f\n",ts,mts,marker);
         }
 
-        eegimage(signal,256, 10,1,1);
+        eegimage(signal,256, Fs, 10,1,true,1);
 
     }
 
@@ -305,7 +307,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double gamma,doubl
             sign[j] = avg/(counters[i]*1.0F);
         }
 
-        eegimage(&descr[i*128],sign,window, gammat,gamma,i);
+        eegimage(&descr[i*128],sign,window, Fs,gammat,gamma,true,i);
 
     }
 
@@ -420,7 +422,7 @@ void trainclassify()
         signal[120] = signal[132] = 40;
         signal[128] = -50;
         //randomSignal(signal,256,20);
-        eegimage(&descr[(0*12+i)*128],signal,256,1,1,i);
+        eegimage(&descr[(0*12+i)*128],signal,256,256,1,1,true,i);
         printdescriptor (&descr[(0*12+i)*128]);
     }
 
@@ -459,7 +461,7 @@ void testclassify()
         {
             double signal[256];
             memset(signal,0,sizeof(double)*256);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
@@ -470,7 +472,7 @@ void testclassify()
             signal[120] = signal[132] = 40;
             signal[128] = -50;
             //randomSignal(signal,256,20);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
@@ -478,7 +480,7 @@ void testclassify()
         {
             double signal[256];
             memset(signal,0,sizeof(double)*256);
-            eegimage(&descr[(j*12+i)*128],signal,256,1,1,i);
+            eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,i);
             printdescriptor (&descr[(j*12+i)*128]);
         }
 
