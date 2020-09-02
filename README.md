@@ -2,6 +2,9 @@
 
 This program takes a monochannel signal, a time series of doubles, and converts that signal into an image, a standardized plot.  It takes the image and use a variant of the SIFT descriptor to capture their visual shape and retuns a descriptor which represents the shape.
 
+![SIFT](images/sift.png)
+![SIFT](images/sift2.png)
+
 The library uses:
 
 - OpenCV
