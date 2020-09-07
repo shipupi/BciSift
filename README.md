@@ -1,16 +1,19 @@
 # BciSift 
 
-This program takes a monochannel signal, a time series of doubles, and converts that signal into an image, a standardized plot.  It takes the image and use a variant of the SIFT descriptor to capture their visual shape and retuns a descriptor which represents the shape.
+This program takes a monochannel signal, a time series of doubles, and converts that signal into an image, a standardized plot.  It takes the image and use a variant of the SIFT descriptor to capture their visual shape and retuns a descriptor which represents that shape.
 
 ![SIFT](images/sift.png)
 ![SIFT](images/sift2.png)
 
+It is aimed to be used in Neuroscience research and applications. This allows to search or compare against specific templates and to verify
+if wavepatterns are presented in a given signal segment.
+
 The library uses:
 
-- OpenCV
+- OpenCV 3.4.2
 - VlFeat: their fastest SIFT implementation, a modified version.
-- KFR: A very fast signal processing library.
-- LSL: Labstreamlayer protocol for connecting to EEG sources.
+- KFR: A very fast signal processing library (c7cd3a9bcc73a10bbe0ba767d7bb6e0804ef8821)
+- LSL: Labstreamlayer protocol for connecting to EEG sources (956a7137e588a4bc0c9618a4451d6ebc6b66966b)
 
 # Usage
 
