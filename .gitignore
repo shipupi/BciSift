@@ -11,8 +11,9 @@ Plots/*.tiff
 BciSift.pro.user
 Makefile*
 *.cmake
-
+build
 CMakeCache.txt
 CMakeFiles/
 CMakeLists.txt
 README.old.md
+.vscode

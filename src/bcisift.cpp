@@ -4,18 +4,16 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
 #include <opencv2/features2d/features2d.hpp>
-
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 
-#include "time.h"
 
-#include "plotprocessing.h"
-#include "dsp.h"
+#include <time.h>
 
-#include "lsl.h"
+#include "include/plotprocessing.h"
+#include "include/dsp.h"
+#include "include/lsl.h"
 
 int randInt(int low, int high)
     {
@@ -202,7 +200,7 @@ result sift(cv::Mat image, const int imageheight, const int imagewidth, int edge
     **/
 
     //(int nfeatures=0, int nOctaveLayers=3, double contrastThreshold=0.04, double edgeThreshold=10, double sigma=1.6)
-    cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create(0,70,0.04,2,1.6);
+    cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0,70,0.04,2,1.6);
 
     detector->detect( image, keypoints);
 
@@ -472,7 +470,7 @@ int sobelmain( int argc, char** argv )
 
   cv::Mat src, src_gray;
   cv::Mat grad;
-  char* window_name = "Sobel Demo - Simple Edge Detector";
+  std::string window_name = "Sobel Demo - Simple Edge Detector";
   int scale = 1;
   int delta = 0;
   int ddepth = CV_16S;
@@ -486,10 +484,10 @@ int sobelmain( int argc, char** argv )
   cv::GaussianBlur( src, src, cv::Size(3,3), 0, 0, cv::BORDER_DEFAULT );
 
   /// Convert it to gray
-  cv::cvtColor( src, src_gray, CV_BGR2GRAY );
+  cv::cvtColor( src, src_gray, cv::COLOR_BGR2GRAY );
 
   /// Create window
-  cv::namedWindow( window_name, CV_WINDOW_AUTOSIZE );
+  cv::namedWindow( window_name, cv::WindowFlags::WINDOW_AUTOSIZE );
 
   /// Generate grad_x and grad_y
   cv::Mat grad_x, grad_y;

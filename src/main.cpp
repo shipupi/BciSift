@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <string.h> 
 
 #include "eegimage.h"
 #include "lsl.h"
