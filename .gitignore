@@ -9,4 +9,10 @@ matching*.png
 Plots/*.tiff
 *.mat
 BciSift.pro.user
-Makefile
+Makefile*
+*.cmake
+
+CMakeCache.txt
+CMakeFiles/
+CMakeLists.txt
+README.old.md
