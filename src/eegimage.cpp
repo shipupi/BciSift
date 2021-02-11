@@ -139,8 +139,13 @@ void calculate_descriptors(float *descr,cv::Mat image, int width, int height,dou
                            x_kp-1,
                            y_kp-1,
                            St) ;  // FIXME, St or Sv ???
-    ik.sigmax = St;
-    ik.sigmay = Sv;
+    
+    
+
+    // ik.sigmax & ik.sigmay don't exist anymore
+    // TODO temporarily changing to ik.x & ik.y, may need to fix this
+    ik.x = St;
+    ik.y = Sv;
 
     k = &ik ;
 

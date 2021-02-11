@@ -29,21 +29,21 @@ end
 
 #include <iostream>
 #include <fstream>
-#include <conio.h>
 #include <sstream>
-#include <windows.h>
+#include <string.h>
+#include <curses.h>
+
+// #include <windows.h>
 #include <map>
 
-#include "EmoStateDLL.h"
-#include "edk.h"
-#include "edkErrorCode.h"
+// #include "EmoStateDLL.h"
+// #include "edk.h"
+// #include "edkErrorCode.h"
 
 #pragma comment(lib, "lib/edk.lib")
 
 #define	PATH	".\\Data\\%s\\%s"
-
-
-#include "eegimage.h"
+#include "include/eegimage.h"
 
 
 // This is the filter that we apply to EDK to tell him what field do we want to retrieve from the transmitted package from Emotiv.
