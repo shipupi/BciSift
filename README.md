@@ -13,7 +13,7 @@ sudo apt install libgtk2.0-dev pkg-config libcanberra-gtk-module libcanberra-gtk
 
 - KFR. https://github.com/kfrlib/kfr.git
 
-- VLFeat. Simply download the zip from https://www.vlfeat.org/ and add the extraction path to /cmake/FindVLFeat.cmake
+- VLFeat. Clone from https://github.com/faturita/vlfeat and add the path to cmake/FindVLFeat.cmake
 
 I've run thesse commands using linux, Cmake however is supposed to be portable (at least in windows and linux), but I have not tried it on another platform yet.
 

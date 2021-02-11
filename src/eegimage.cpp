@@ -4,13 +4,15 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/features2d/features2d.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/xfeatures2d.hpp>
 
 #include <opencv2/features2d/features2d.hpp>
 
+#include "include/bcisift.h"
 #include "vl/sift.h"
 #include "vl/mathop.h"
-
-#include "bcisift.cpp"
 
 const int imagewidth = 256;
 const int imageheight= 240;

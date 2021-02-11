@@ -1,10 +1,12 @@
 #include <lsl_cpp.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-#include "eegimage.h"
-#include "plotprocessing.h"
-#include "unp.h"
+
+#include "include/eegimage.h"
+#include "include/plotprocessing.h"
+#include "include/unp.h"
 
 
 using namespace lsl;
@@ -243,7 +245,7 @@ struct SpellerLetter processtrial(float *descr,double gammat, double gamma,doubl
             if (marker >= 33025 && marker <= 33037)
             {
                 int stim = (int)marker - 33025;
-                printf ("- Stim: %d.",ts,mts,marker,stim);
+                printf ("- Stim: %d.", stim);
                 stims[stimcounter]=stim;
                 stimmarkers[stimcounter] = (int)((mts-tsoffset)*window);
                 stimcounter++;

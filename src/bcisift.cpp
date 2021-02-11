@@ -11,6 +11,7 @@
 
 #include <time.h>
 
+#include "include/bcisift.h"
 #include "include/plotprocessing.h"
 #include "include/dsp.h"
 #include "include/lsl.h"
@@ -47,11 +48,7 @@ cv::Mat findkeypoint(int octave, cv::Mat image, const int imageheight, const int
 
 const int thresh = 20;
 
-struct result
-{
-    int size;
-    int hits;
-};
+
 
 result handmadesift(cv::Mat image, const int imageheight, const int imagewidth, const int numOctaves, std::vector<int> event)
 {
