@@ -585,4 +585,5 @@ int eegiamage(double avg, double data)
             }
         }
     }
+    return 0;
 }

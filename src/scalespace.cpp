@@ -313,6 +313,10 @@ cv::Mat grad(cv::Mat src)
     imshow( window_name, grad );
 
     cv::waitKey(0);
+
+    // Returning to avoid warning, this might not be correct
+    return grad;
+    
 }
 
 

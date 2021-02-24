@@ -331,7 +331,7 @@ int trainspeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 16;10;16;256;
+    double Fs = 16;//10;16;256;
     double gammat  =6;
     double gamma = 10;
 
@@ -371,7 +371,7 @@ int onlinespeller() {
     std::vector<stream_info> results = resolve_stream("name","openvibeSignal2");
     stream_inlet inlet(results[0]);
 
-    double Fs = 16;10;16;256;
+    double Fs = 16;//10;16;256;
     double gammat  =6;
     double gamma = 10;
 
@@ -410,6 +410,9 @@ int udp()
     le.row = 1;
     le.col = 1;
     informresult(sockfd,le.row,le.col);
+
+    // Returning to avoid warning, this might not be correct
+    return 0;
 }
 
 void trainclassify()
