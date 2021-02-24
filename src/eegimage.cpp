@@ -343,7 +343,7 @@ int eegimage(float *descr,double signal[], int defaultheight, int length, int ga
     cvWaitKeyWrapper();
 
     std::string ext = ".png";
-
+    
     cv::imwrite(windowname + ext, image );
 
     return 1;

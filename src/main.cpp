@@ -221,16 +221,24 @@ int main( int argc, char **argv)
     else if (strcmp(argv[1],"rand")==0)
     {
         //float descr[20][128];
-        int trials = 7*5;
+        int words = 7;
+        int charsPerWord = 5;
+        int trials = words * charsPerWord;
+        int timePoints = 128;
 
-        float *descr = new float[7*5*12*128];
+        // Cada segmento es una fila o una columna del experimento
+        int segments = 12;
+        // 7 Palabras, 5 letras, 12 repeticiones / palabra, 128 divisiones de tiempo en la signal.
+        float *descr = new float[trials * timePoints * segments];
+        
         for(int j=0;j<trials;j++)
         {
             for(int i=0;i<6;i++)
             {
                 double signal[256];
                 memset(signal,0,sizeof(double)*256);
-                signal[120] = signal[132] = 2*40;
+                signal[120] =  2*40;
+                signal[132] =  2*40;
                 signal[128] = -50*2;
                 eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,1);
             }
@@ -239,18 +247,18 @@ int main( int argc, char **argv)
             {
                 double signal[256];
                 memset(signal,0,sizeof(double)*256);
-                signal[120] = signal[132] = 40;
+                signal[120] = 40;
+                signal[132] = 40;
                 signal[128] = -50;
                 //randomSignal(signal,256,20);
-
                 eegimage(&descr[(j*12+i)*128],signal,256,256,1,1,true,1);
             }
         }
 
         // Joya en este punto puedo tratar de clasificarlos.
-        classify(descr, trials,3*5,4*5);
+        // classify(descr, trials,3*5,4*5);
 
-        delete [] descr;
+        // delete [] descr;
 
     }
 
