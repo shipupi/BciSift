@@ -89,7 +89,7 @@ cv::Mat processplot(char *filename)
         printf("Error!\n");
         return descriptors; }
 
-    cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create(0,70,0.04,2,1.6);
+    cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0,70,0.04,2,1.6);
 
     detector->detect( src, keypoints);
 
@@ -449,7 +449,7 @@ void comparesignals(int subject1, int epoch1, int label1, int channel1, int subj
 
     /**
     https://docs.opencv.org/3.2.0/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
-    static Ptr<SIFT> cv::xfeatures2d::SIFT::create	(	int 	nfeatures = 0,
+    static Ptr<SIFT> cv::SIFT::create	(	int 	nfeatures = 0,
     int 	nOctaveLayers = 3,
     double 	contrastThreshold = 0.04,
     double 	edgeThreshold = 10,
@@ -457,9 +457,9 @@ void comparesignals(int subject1, int epoch1, int label1, int channel1, int subj
     )	**/
 
 
-    cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create(0,70,0.04,2,1.6);
+    cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0,70,0.04,2,1.6);
 
-    //cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create();
+    //cv::Ptr<cv::SIFT> detector = cv::SIFT::create();
 
     detector->detect( src1, keypoints1);
     cv::drawKeypoints( src1,

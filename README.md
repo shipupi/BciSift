@@ -26,10 +26,17 @@ For MAC installation, check the original repository on https://github.com/faturi
 
 ### Building
 
-- You may need to export  OpenCV_DIR variable. However this is probably due to an incorrect opencv installation
+- Export  OpenCV_DIR variable:
 ```sh
 export OpenCV_DIR=<path_of_opencv/build>
 ```
+
+Also may have to export opencv for the linker:
+
+```sh
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/<path_of_opencv>/build/lib
+```
+
 - Build makefile with Cmake, and then run it
 ```sh
 cmake -DCMAKE_CXX_COMPILER=clang++

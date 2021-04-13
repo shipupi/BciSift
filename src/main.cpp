@@ -2,11 +2,11 @@
 #include <fstream>
 #include <string.h> 
 
-#include "eegimage.h"
-#include "lsl.h"
-#include "plotprocessing.h"
-#include "decoder.h"
-#include "dsp.h"
+#include <eegimage.h>
+#include <lsl.h>
+#include <plotprocessing.h>
+#include <decoder.h>
+#include <dsp.h>
 
 
 int  eeglogger(char *filename, char *subject, int duration);

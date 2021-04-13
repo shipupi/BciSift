@@ -1,4 +1,5 @@
 *.o
+DartConfiguration.tcl
 .qmake.stash
 debug/*.o
 debug/.qmake.stash
