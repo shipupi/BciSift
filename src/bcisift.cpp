@@ -11,10 +11,10 @@
 
 #include <time.h>
 
-#include "include/bcisift.h"
-#include "include/plotprocessing.h"
-#include "include/dsp.h"
-#include "include/lsl.h"
+#include <bcisift.h>
+#include <plotprocessing.h>
+#include <dsp.h>
+#include <lsl.h>
 
 int randInt(int low, int high)
     {

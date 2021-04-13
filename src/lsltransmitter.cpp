@@ -3,11 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 
-
-#include "include/eegimage.h"
-#include "include/plotprocessing.h"
-#include "include/unp.h"
-
+#include <eegimage.h>
+#include <plotprocessing.h>
+#include <unp.h>
 
 using namespace lsl;
 

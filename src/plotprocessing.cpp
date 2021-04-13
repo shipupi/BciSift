@@ -13,8 +13,8 @@
 #include <opencv2/ml.hpp>
 
 
-#include "serializer.h"
-#include "spellerletter.h"
+#include <serializer.h>
+#include <spellerletter.h>
 
 using namespace cv::ml;
 
