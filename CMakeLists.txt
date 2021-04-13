@@ -3,6 +3,9 @@
 cmake_minimum_required(VERSION 3.1)
 project( BCISift )
 
+include (CTest)
+
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 #C++17 version
@@ -14,8 +17,6 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 ## LSL
-find_package(LSL)
-
 ## KFR
 # Include KFR subdirectory
 add_subdirectory(kfr)
@@ -51,6 +52,7 @@ link_directories(${PROJECT_SOURCE_DIR}/src/include)
 
 
 # Build
+message("Opencv librs: ${OpenCV_INCLUDE_DIRS}")
 add_executable( BCISift ${SOURCES})
 target_link_libraries( BCISift ${OpenCV_LIBS} )
 target_link_libraries(BCISift ${VLFEAT_LIBRARIES})

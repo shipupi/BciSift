@@ -28,7 +28,9 @@ module1 = Extension('pybcisift',
                     #'/Users/rramele/work/labstreaminglayer/build/install/LSL/lib/',
                     #'/Users/rramele/work/vlfeat/bin/maci64/',
                     '/home/shipu/facu/pf/libs/vlfeat/bin/glnxa64',
-                    '/home/shipu/facu/pf/libs/liblsl-1.14.0'
+                    '/home/shipu/facu/pf/libs/opencv2_contrib/build/lib',
+                    '/home/shipu/facu/pf/libs/opencv2_contrib/build'
+              #       '/home/shipu/facu/pf/libs/liblsl-1.14.0'
                     ],
                     sources = ['pybcisift.cpp',
                     '../src/eegimage.cpp',

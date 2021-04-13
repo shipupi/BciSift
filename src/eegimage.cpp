@@ -14,6 +14,7 @@
 #include "vl/sift.h"
 #include "vl/mathop.h"
 
+
 const int imagewidth = 256;
 const int imageheight= 240;
 
@@ -228,6 +229,72 @@ void zscore(double *signal, int length)
 }
 
 
+void saveImage(cv::Mat image, std::string name) 
+{
+    std::string ext = ".png";
+    cv::imwrite(name + ext, image );
+}
+
+
+// Desparametrizamos defaultheight a 256, gammat y gamma a 1, y normalize a true.
+cv::Mat eegimage(double signal[], int length, bool save,std::string name)
+{
+
+    int defaultheight = 256;
+    int gammat = 1;
+    int gamma = 1;
+
+    int height;
+    int width;
+    int zerolevel=floor(abs(min(signal, length)));
+    // Normalizacion
+    zscore(signal,length);
+    height = round(gamma * max(signal,length)) - round( gamma * min(signal, length));
+    height *= 2;zerolevel = height/2;
+    if (height < defaultheight)
+    {
+        height = defaultheight;
+        zerolevel = height/2;
+    }
+
+    width = length * gammat;
+
+    cv::Mat image(height,width,CV_8U,cv::Scalar(0));
+    cv::Scalar color(255,255,255);
+
+    int idx = 1;
+    double avg = mean(signal,length);
+    for(idx=0;idx<length-1;idx++)
+    {
+        //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
+
+        // FIXME: Substract the average and calculate the z-score.
+        double value = zerolevel+(int)(signal[idx] * gamma)-1;// - (int)avg-1;
+        double valuenext = zerolevel+(int)(signal[idx+1] * gamma)-1;// - (int)avg-1;
+
+        if (value<0) value = 1;
+        if (value>height) value = (height-1);
+
+        if (valuenext<0) valuenext = 1;
+        if (valuenext>height) valuenext = (height-1);
+
+        cv::Point pt1( (idx) * gammat,value);
+        cv::Point pt2( (idx+1) * gammat,valuenext);
+
+        // Draw a new line between pt1 and pt2.  The line routine uses Brasenham algorithm.
+        cv::line(image, pt1, pt2,color);
+    }
+
+    // TODO  lo que le sigue al codigo original es relacionado al sift *CREO* (cosultar con rodri)
+
+    if (save) {
+        saveImage(image, name);
+    }
+    
+    return image;
+}
+
+
 
 int eegimage(float *descr,double signal[], int defaultheight, int length, int gammat, int gamma, bool normalize, std::string windowname)
 {
@@ -263,13 +330,7 @@ int eegimage(float *descr,double signal[], int defaultheight, int length, int ga
     cv::Scalar color(255,255,255);
 
     int idx = 1;
-
-
-
     double avg = mean(signal,length);
-
-
-
     for(idx=0;idx<length-1;idx++)
     {
         //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
@@ -319,7 +380,6 @@ int eegimage(float *descr,double signal[], int defaultheight, int length, int ga
     int y_kp = zerolevel;
 
     printf("Sv = %10.5f, St = %10.5f \n",Sv, St);
-
     calculate_descriptors(descr,image,width,height,St,Sv,x_kp, y_kp, true);
 
     // Show patch geometry
@@ -349,6 +409,10 @@ int eegimage(float *descr,double signal[], int defaultheight, int length, int ga
     return 1;
 }
 
+
+
+// Basicamente es un wrapper para eegimage donde en vez de pasarle un name se le pasa un Id
+// despues hace ese movewindow que nose bien que hace.
 int eegimage(float *descr,double signal[],int defaultheight, int length, int gammat, int gamma,bool normalize,int windowlabelid)
 {
     // 1 La imagen queda igual
@@ -363,11 +427,16 @@ int eegimage(float *descr,double signal[],int defaultheight, int length, int gam
     return ret;
 }
 
+
+// Otro wrapper que no recibe el descr como parametro. Nose cual es la funcion de este porque
+// el descr es donde se graba la respuesta. Aca se ignoraria directamente
 int eegimage(double signal[],int length, int Fs, int gammat, int gamma,bool normalize, int label)
 {
     float descr[128];
     return eegimage(descr,signal,length,Fs, gammat, gamma,normalize,label);
 }
+
+
 
 
 int eegimage(double avg, double data)
@@ -413,8 +482,6 @@ int eegimage(double avg, double data)
     if (idx>imagewidth)
     {
         std::cout << "-------------" << std::endl;
-
-
         calculate_descriptors(image);
 
 
@@ -434,156 +501,4 @@ int eegimage(double avg, double data)
 
     return 1;
 
-}
-
-
-
-int eegiamage(double avg, double data)
-{
-    int option = 1;
-
-    // 1 La imagen queda igual
-    // 2 La imagen se ajusta a toda la pantalla y se resizea.
-    cv::namedWindow("BrainWaves",2);
-
-    static cv::Point pt1(1,imageheight/2);
-    static cv::Point pt2(1+timestep,imageheight/2);
-
-    static int idx = 2;
-
-    static cv::Mat image(imageheight,imagewidth,CV_8U,cv::Scalar(0));
-    static cv::Scalar color(255,255,255);
-
-
-    // Draw a new line between pt1 and pt2.  The line routine uses Brasenham algorithm.
-    cv::line(image, pt1, pt2,color);
-
-
-    int key = cv::waitKey(3000);
-
-    switch (key)
-    {
-        case 13:
-            while ( cv::waitKey(1000) != 13);
-            break;
-        case '-':
-            err-=1;
-            break;
-        case '+':
-            err+=1;
-            break;
-        case 'w':
-            edgeresponse+=1;
-            break;
-        case 's':
-            edgeresponse-=1;
-            break;
-        case 't':
-            autotest=1;
-            break;
-        case 27:
-            exit(-1);
-            break;
-    }
-
-    // Err is a standard deviation which can be adjusted.
-    if (!(0 < err && err<=50))
-        err=0;
-
-    // SIFT parameters
-    if (!(0 < edgeresponse && edgeresponse<=90))
-        edgeresponse=0;
-
-    // The Window Name must be the same.
-    cv::imshow("BrainWaves", image);
-
-
-    pt1=pt2;
-
-    {
-        //cv::Point pt3(idx+=timestep,100+randInt(50-err,50+err)-50);
-
-        int val = (imageheight/2)+(int)data - (int)avg;
-
-        if (val<0) val = 1;
-        if (val>imageheight) val = (imageheight-1);
-
-        std::cout<<"Idx:" << idx << std::endl;
-
-        cv::Point pt3(idx+=timestep,val);
-
-
-        pt2=pt3;
-    }
-
-
-    if (idx>=imagewidth)
-    {
-        result r;
-
-        //cv::imwrite("base.png", image);
-
-        /**
-        switch (option)
-        {
-        case 1:
-            r=sift(image, imageheight, imagewidth, edgeresponse, event);
-            strcpy(logfilename,"sift");
-            break;
-        case 2:
-            r=surf(image, imageheight, imagewidth, event);
-            strcpy(logfilename,"surf");
-            break;
-        case 3:
-            r=featuredetector(image, imageheight, imagewidth, event);
-            strcpy(logfilename,"fast");
-            break;
-        default:
-            r=handmadesift(image, imageheight, imagewidth, numOctaves, event);
-            strcpy(logfilename,"handmade");
-        }**/
-
-        std::cout << "-------------" << std::endl;
-
-        cv::Mat image2(imageheight,imagewidth,CV_8U,cv::Scalar(0));
-        image = image2;
-        idx=3;
-        cv::Point pt4(1,imageheight/2);
-        cv::Point pt5(1+timestep,imageheight/2);
-
-        pt1=pt4;
-        pt2=pt5;
-
-        std::cout << event.size() << ":" << "SNR:" << (times*1.0)/(err+1) << "/" << r.hits << std::endl;
-
-        if (autotest>0)
-        {
-            std::ofstream myfile;
-            myfile.open (logfilename, std::ios::app | std::ios::out);
-            myfile << (times*1.0)/(err+1) << " " << r.size << " " << r.hits << std::endl;
-            myfile.close();
-        }
-
-        times=0;psd=0;
-
-        event.clear();
-
-        if (autotest>0)
-        {
-            autotest++;
-
-            if (autotest % 100 == 0)
-            {
-                err+=1;
-            }
-
-            if (err>=49)
-            {
-                err=0;
-                autotest=0;
-                exit(1);
-            }
-        }
-    }
-    return 0;
 }

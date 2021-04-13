@@ -1,0 +1,521 @@
+000000000002a980 B autotest
+                 U bind@@GLIBC_2.2.5
+000000000002a85c B __bss_start
+                 U close@@GLIBC_2.2.5
+000000000002a860 b completed.7698
+                 U __cxa_allocate_exception@@CXXABI_1.3
+                 U __cxa_atexit@@GLIBC_2.2.5
+                 U __cxa_begin_catch@@CXXABI_1.3
+                 U __cxa_end_catch@@CXXABI_1.3
+                 w __cxa_finalize@@GLIBC_2.2.5
+                 U __cxa_free_exception@@CXXABI_1.3
+                 U __cxa_guard_abort@@CXXABI_1.3
+                 U __cxa_guard_acquire@@CXXABI_1.3
+                 U __cxa_guard_release@@CXXABI_1.3
+                 U __cxa_rethrow@@CXXABI_1.3
+                 U __cxa_throw@@CXXABI_1.3
+000000000000d500 t deregister_tm_clones
+000000000000d590 t __do_global_dtors_aux
+00000000000295a0 t __do_global_dtors_aux_fini_array_entry
+000000000002a720 d __dso_handle
+000000000002a808 d DW.ref.__gxx_personality_v0
+000000000002a850 d DW.ref._ZTISt13runtime_error
+0000000000029af8 d _DYNAMIC
+000000000002a85c D _edata
+000000000002a804 D edgeresponse
+000000000002ab10 B _end
+000000000002a984 B err
+000000000002a990 B event
+                 U exit@@GLIBC_2.2.5
+                 U fclose@@GLIBC_2.2.5
+                 U fcntl@@GLIBC_2.2.5
+0000000000022370 T _fini
+                 U fopen@@GLIBC_2.2.5
+                 U __fprintf_chk@@GLIBC_2.3.4
+000000000000d5d0 t frame_dummy
+0000000000029558 t __frame_dummy_init_array_entry
+00000000000264c8 r __FRAME_END__
+                 U fread@@GLIBC_2.2.5
+                 U free@@GLIBC_2.2.5
+                 U fwrite@@GLIBC_2.2.5
+000000000002a000 d _GLOBAL_OFFSET_TABLE_
+000000000000d320 t _GLOBAL__sub_I_decoder.cpp
+000000000000d2b0 t _GLOBAL__sub_I_dsp.cpp
+000000000000d070 t _GLOBAL__sub_I_eegimage.cpp
+000000000000d2f0 t _GLOBAL__sub_I_lsltransmitter.cpp
+000000000000d100 t _GLOBAL__sub_I_plotprocessing.cpp
+000000000000d040 t _GLOBAL__sub_I_pybcisift.cpp
+000000000000d0d0 t _GLOBAL__sub_I_scalespace.cpp
+000000000000d350 t _GLOBAL__sub_I_serializer.cpp
+                 w __gmon_start__
+00000000000241b0 r __GNU_EH_FRAME_HDR
+                 U __gxx_personality_v0@@CXXABI_1.3
+                 U inet_ntop@@GLIBC_2.2.5
+                 U inet_pton@@GLIBC_2.2.5
+000000000000c000 T _init
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+000000000002a880 B logfilename
+                 U lsl_create_inlet
+                 U lsl_create_outlet
+                 U lsl_create_streaminfo
+                 U lsl_destroy_inlet
+                 U lsl_destroy_outlet
+                 U lsl_destroy_streaminfo
+                 U lsl_get_channel_count
+                 U lsl_pull_sample_f
+                 U lsl_push_sample_ftp
+                 U lsl_resolve_byprop
+000000000000cfc0 T main
+                 U memcpy@@GLIBC_2.14
+                 U memcpy@GLIBC_2.2.5
+                 U memmove@@GLIBC_2.2.5
+                 U memset@@GLIBC_2.2.5
+                 U perror@@GLIBC_2.2.5
+                 U pow@@GLIBC_2.2.5
+                 U __printf_chk@@GLIBC_2.3.4
+                 w __pthread_key_create@@GLIBC_2.2.5
+                 U putchar@@GLIBC_2.2.5
+                 U puts@@GLIBC_2.2.5
+                 U _PyArg_ParseTuple_SizeT
+                 U _Py_BuildValue_SizeT
+                 U Py_DecodeLocale
+                 U PyErr_SetString
+                 U PyExc_TypeError
+                 U PyImport_AppendInittab
+                 U PyImport_ImportModule
+                 U Py_Initialize
+000000000000d5e0 T PyInit_pybcisift
+                 U PyList_New
+                 U PyList_SetItem
+                 U PyMem_RawFree
+                 U PyModule_Create2
+                 U PyNumber_Float
+                 U PySequence_Fast
+                 U Py_SetProgramName
+                 U rand@@GLIBC_2.2.5
+                 U recvfrom@@GLIBC_2.2.5
+000000000000d540 t register_tm_clones
+                 U round@@GLIBC_2.2.5
+                 U sendto@@GLIBC_2.2.5
+                 U sleep@@GLIBC_2.2.5
+                 U __snprintf_chk@@GLIBC_2.3.4
+                 U socket@@GLIBC_2.2.5
+                 U __sprintf_chk@@GLIBC_2.3.4
+                 U __stack_chk_fail@@GLIBC_2.4
+                 U stderr@@GLIBC_2.2.5
+                 U strlen@@GLIBC_2.2.5
+                 U strtol@@GLIBC_2.2.5
+000000000002a860 d __TMC_END__
+                 U _Unwind_Resume@@GCC_3.0
+                 U vl_sift_calc_keypoint_descriptor
+                 U vl_sift_delete
+                 U vl_sift_keypoint_init
+                 U vl_sift_new
+                 U vl_sift_process_first_octave
+00000000000114e0 T addextrema(int, cv::Mat, cv::Point_<int>, double)
+00000000000159e0 T readlabels(int)
+00000000000107f0 T scalespace(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, cv::Mat, int, int, float)
+000000000001fdb0 T testmemory()
+0000000000017240 T comparehits()
+0000000000014740 T processplot(char*)
+00000000000113a0 T showextrema(cv::Mat, int)
+0000000000011000 T extremascale(cv::Mat, cv::Point_<int>, double)
+0000000000010e70 T extremascale(cv::Mat, cv::Point_<int>, cv::Point_<int>, double&, double&)
+0000000000012840 T findkeypoint(int, cv::Mat, int, int, std::vector<cv::Point_<int>, std::allocator<cv::Point_<int> > >&)
+00000000000221c0 T informresult(int, int, int)
+000000000001eb20 T processtrial(float*, double, double, double, lsl::stream_inlet&, lsl::stream_inlet&)
+000000000001fe50 T testclassify()
+0000000000020090 T trainspeller()
+00000000000198b0 T classifytrial(float*)
+0000000000011ce0 T locateextrema(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, cv::Mat, cv::Mat, cv::Mat, cv::Mat, std::vector<cv::Point_<int>, std::allocator<cv::Point_<int> > >&)
+00000000000205b0 T onlinespeller()
+0000000000010c70 T patchfromthis(cv::Mat, int, int)
+0000000000010a70 T patchfromthis(cv::Mat, int, int, int)
+000000000001bd90 T receivingfull()
+000000000001fcb0 T trainclassify()
+0000000000016370 T comparesignals(int, int, int, int, int, int, int, int)
+000000000000da10 T printdescriptor(float*)
+000000000001d980 T receivingsignal()
+0000000000021930 T serializeMatbin(cv::Mat&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+000000000000da90 T cvWaitKeyWrapper()
+0000000000021a40 T deserializeMatbin(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+000000000001ca90 T sendeegandmarkers()
+0000000000021fe0 T createsignalserver()
+00000000000123a0 T locatelocalextrema(int, cv::Mat, cv::Mat, cv::Mat, std::vector<cv::Point_<int>, std::allocator<cv::Point_<int> > >&)
+0000000000021bd0 T testSerializeMatbin()
+000000000000d850 T transpose_descriptor(float*, float*)
+000000000000f0e0 T calculate_descriptors(cv::Mat)
+000000000000e5e0 T calculate_descriptors(float*, cv::Mat, int, int, double, double, int, int, bool)
+000000000000dc40 T max(double*, int)
+000000000000dd00 T min(double*, int)
+000000000001fc80 T udp()
+0000000000011770 T grad(cv::Mat)
+000000000000db80 T mean(double*, int)
+00000000000220a0 T send(int, int)
+0000000000010de0 T patch(cv::Mat, int, int)
+0000000000010d00 T patch(cv::Mat, int, int, int)
+00000000000116e0 T heatup(cv::Mat, float, float)
+000000000000ddc0 T zscore(double*, int)
+0000000000020a70 T decoder()
+00000000000173a0 T process()
+000000000001ce90 T sendeeg()
+000000000001bba0 T sending()
+000000000001b0d0 T testdsp()
+0000000000014aa0 T classify(float*, int, int, int)
+000000000000f180 T eegimage(double, double)
+000000000000e1e0 T eegimage(double*, int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+0000000000010560 T eegimage(double*, int, int, int, int, bool, int)
+0000000000010200 T eegimage(float*, double*, int, int, int, int, bool, int)
+000000000000f6d0 T eegimage(float*, double*, int, int, int, int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+0000000000014430 T memorize(float*, int)
+0000000000014620 T remember(float*, int)
+0000000000010a20 T setValAt(cv::Mat, int, int, int)
+000000000001d0b0 T receiving()
+000000000000dfe0 T saveImage(cv::Mat, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+0000000000010730 T subsample(cv::Mat)
+                 U operator delete[](void*)@@GLIBCXX_3.4
+                 U operator delete(void*)@@GLIBCXX_3.4
+                 U operator delete(void*, unsigned long)@@CXXABI_1.3.9
+000000000002aaa0 u guard variable for cvflann::anyimpl::SinglePolicy<bool>::policy
+000000000002aaa8 u guard variable for cvflann::anyimpl::SinglePolicy<float>::policy
+000000000002aab0 u guard variable for cvflann::anyimpl::SinglePolicy<int>::policy
+000000000002aac0 u guard variable for cvflann::anyimpl::SinglePolicy<cvflann::anyimpl::empty_any>::policy
+000000000002aa98 u guard variable for cvflann::anyimpl::SinglePolicy<cvflann::flann_algorithm_t>::policy
+000000000002aa90 u guard variable for cvflann::anyimpl::SinglePolicy<cvflann::flann_centers_init_t>::policy
+000000000002aa88 u guard variable for cvflann::anyimpl::SinglePolicy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::policy
+000000000002aab8 u guard variable for cvflann::anyimpl::SinglePolicy<char const*>::policy
+000000000002a9b8 b guard variable for eegimage(double, double)::pt1
+000000000002a9a8 b guard variable for eegimage(double, double)::pt2
+000000000002a9c8 b guard variable for eegimage(double, double)::color
+000000000002aa00 b guard variable for eegimage(double, double)::image
+000000000002ab00 u guard variable for kfr::internal_generic::init_dummyvar()::dummy
+000000000002a740 d spammodule
+000000000002a7c0 d SpamMethods
+000000000000d600 t pybcisift_extract(_object*, _object*)
+                 U cv::meanStdDev(cv::_InputArray const&, cv::_OutputArray const&, cv::_OutputArray const&, cv::_InputArray const&)
+                 U cv::moveWindow(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int)
+                 U cv::addWeighted(cv::_InputArray const&, double, cv::_InputArray const&, double, double, cv::_OutputArray const&, int)
+                 U cv::drawMatches(cv::_InputArray const&, std::vector<cv::KeyPoint, std::allocator<cv::KeyPoint> > const&, cv::_InputArray const&, std::vector<cv::KeyPoint, std::allocator<cv::KeyPoint> > const&, std::vector<cv::DMatch, std::allocator<cv::DMatch> > const&, cv::_InputOutputArray const&, cv::Scalar_<double> const&, cv::Scalar_<double> const&, std::vector<char, std::allocator<char> > const&, cv::DrawMatchesFlags)
+                 U cv::namedWindow(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)
+                 U cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int)
+                 U cv::drawKeypoints(cv::_InputArray const&, std::vector<cv::KeyPoint, std::allocator<cv::KeyPoint> > const&, cv::_InputOutputArray const&, cv::Scalar_<double> const&, cv::DrawMatchesFlags)
+                 U cv::convertScaleAbs(cv::_InputArray const&, cv::_OutputArray const&, double, double)
+                 U cv::MatConstIterator::seek(long, bool)
+                 U cv::MatConstIterator::seek(int const*, bool)
+                 U cv::DescriptorMatcher::~DescriptorMatcher()
+                 U cv::ml::SVM::create()
+                 U cv::Mat::push_back_(void const*)
+                 U cv::Mat::ones(int, int, int)
+                 U cv::Mat::zeros(int, int, int)
+                 U cv::Mat::release()
+                 U cv::Mat::push_back(cv::Mat const&)
+                 U cv::Mat::operator=(cv::Mat&&)
+                 U cv::Mat::operator=(cv::Mat const&)
+                 U cv::Mat::Mat(int, int, int)
+                 U cv::Mat::Mat(int, int, int, void*, unsigned long)
+                 U cv::Mat::Mat(int, int, int, cv::Scalar_<double> const&)
+                 U cv::Mat::Mat(cv::Mat&&)
+                 U cv::Mat::Mat(cv::Mat const&)
+                 U cv::Mat::Mat(cv::Mat const&, cv::Range const&, cv::Range const&)
+                 U cv::Mat::Mat()
+                 U cv::Mat::Mat(int, int, int)
+                 U cv::Mat::Mat()
+                 U cv::Mat::~Mat()
+                 U cv::Mat::~Mat()
+                 U cv::sum(cv::_InputArray const&)
+                 U cv::line(cv::_InputOutputArray const&, cv::Point_<int>, cv::Point_<int>, cv::Scalar_<double> const&, int, int, int)
+                 U cv::mean(cv::_InputArray const&, cv::_InputArray const&)
+                 U cv::SIFT::create(int, int, double, double, double)
+                 U cv::error(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*, char const*, int)
+                 U cv::flann::IndexParams::~IndexParams()
+                 U cv::flann::SearchParams::SearchParams(int, float, bool)
+                 U cv::flann::KDTreeIndexParams::KDTreeIndexParams(int)
+                 U cv::flann::Index::knnSearch(cv::_InputArray const&, cv::_OutputArray const&, cv::_OutputArray const&, int, cv::flann::SearchParams const&)
+                 U cv::flann::Index::Index(cv::_InputArray const&, cv::flann::IndexParams const&, cvflann::flann_distance_t)
+                 U cv::flann::Index::~Index()
+                 U cv::Sobel(cv::_InputArray const&, cv::_OutputArray const&, int, int, int, int, double, double, int)
+                 U cv::circle(cv::_InputOutputArray const&, cv::Point_<int>, int, cv::Scalar_<double> const&, int, int, int)
+                 U cv::imread(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)
+                 U cv::imshow(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::_InputArray const&)
+                 U cv::imwrite(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::_InputArray const&, std::vector<int, std::allocator<int> > const&)
+0000000000013f20 W cv::MatExpr::~MatExpr()
+0000000000013f20 W cv::MatExpr::~MatExpr()
+                 U cv::noArray()
+                 U cv::pyrDown(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int> const&, int)
+                 U cv::waitKey(int)
+                 U cv::cvtColor(cv::_InputArray const&, cv::_OutputArray const&, int, int)
+                 U cv::BFMatcher::BFMatcher(int, bool)
+                 U cv::minMaxLoc(cv::_InputArray const&, double*, double*, cv::Point_<int>*, cv::Point_<int>*, cv::_InputArray const&)
+                 U cv::threshold(cv::_InputArray const&, cv::_OutputArray const&, double, double, int)
+                 U cv::operator-(cv::Mat const&, cv::Mat const&)
+                 U cv::operator*(cv::MatExpr const&, double)
+000000000001b2a0 W kfr::cpu_t kfr::internal_generic::detect_cpu<0ul>()
+                 U kfr::univector<double, 18446744073709551615ul> kfr::sse2::intrinsics::convolve<double>(kfr::univector<double const, 0ul> const&, kfr::univector<double const, 0ul> const&)
+000000000001c6b0 W lsl::timeout_error::~timeout_error()
+000000000001c690 W lsl::timeout_error::~timeout_error()
+000000000001c690 W lsl::timeout_error::~timeout_error()
+000000000001c6e0 W lsl::resolve_stream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, double)
+000000000002a828 u cvflann::anyimpl::SinglePolicy<bool>::policy
+000000000002a830 u cvflann::anyimpl::SinglePolicy<float>::policy
+000000000002a838 u cvflann::anyimpl::SinglePolicy<int>::policy
+000000000002a848 u cvflann::anyimpl::SinglePolicy<cvflann::anyimpl::empty_any>::policy
+000000000002a820 u cvflann::anyimpl::SinglePolicy<cvflann::flann_algorithm_t>::policy
+000000000002a818 u cvflann::anyimpl::SinglePolicy<cvflann::flann_centers_init_t>::policy
+000000000002a810 u cvflann::anyimpl::SinglePolicy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::policy
+000000000002a840 u cvflann::anyimpl::SinglePolicy<char const*>::policy
+000000000001a620 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::static_delete(void**)
+000000000001a7e0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::copy_from_value(void const*, void**)
+000000000001a4b0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::move(void* const*, void**)
+000000000001a7c0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::clone(void* const*, void**)
+000000000001a8e0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::print(std::ostream&, void* const*)
+000000000001a4d0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::get_value(void* const*)
+000000000001a4c0 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::get_value(void**)
+000000000001a640 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::~big_any_policy()
+000000000001a230 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::~big_any_policy()
+000000000001a230 W cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>::~big_any_policy()
+000000000001a600 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::static_delete(void**)
+000000000001a790 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::copy_from_value(void const*, void**)
+000000000001a540 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::move(void* const*, void**)
+000000000001a760 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::clone(void* const*, void**)
+000000000001a860 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::print(std::ostream&, void* const*)
+000000000001a560 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::get_value(void* const*)
+000000000001a550 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::get_value(void**)
+000000000001a690 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::~big_any_policy()
+000000000001a280 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::~big_any_policy()
+000000000001a280 W cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>::~big_any_policy()
+000000000001a5e0 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::static_delete(void**)
+000000000001a730 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::copy_from_value(void const*, void**)
+000000000001a590 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::move(void* const*, void**)
+000000000001a700 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::clone(void* const*, void**)
+000000000001a850 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::print(std::ostream&, void* const*)
+000000000001a5b0 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::get_value(void* const*)
+000000000001a5a0 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::get_value(void**)
+000000000001a6a0 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::~big_any_policy()
+000000000001a290 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::~big_any_policy()
+000000000001a290 W cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>::~big_any_policy()
+000000000001a6c0 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::static_delete(void**)
+000000000001a950 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::copy_from_value(void const*, void**)
+000000000001a810 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::move(void* const*, void**)
+000000000001aa50 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::clone(void* const*, void**)
+000000000001a890 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::print(std::ostream&, void* const*)
+000000000001a510 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::get_value(void* const*)
+000000000001a500 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::get_value(void**)
+000000000001a6b0 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::~big_any_policy()
+000000000001a2a0 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::~big_any_policy()
+000000000001a2a0 W cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::~big_any_policy()
+000000000001a2b0 W cvflann::anyimpl::small_any_policy<bool>::static_delete(void**)
+000000000001a2c0 W cvflann::anyimpl::small_any_policy<bool>::copy_from_value(void const*, void**)
+000000000001a2e0 W cvflann::anyimpl::small_any_policy<bool>::move(void* const*, void**)
+000000000001a2d0 W cvflann::anyimpl::small_any_policy<bool>::clone(void* const*, void**)
+000000000001a880 W cvflann::anyimpl::small_any_policy<bool>::print(std::ostream&, void* const*)
+000000000001a300 W cvflann::anyimpl::small_any_policy<bool>::get_value(void* const*)
+000000000001a2f0 W cvflann::anyimpl::small_any_policy<bool>::get_value(void**)
+000000000001a680 W cvflann::anyimpl::small_any_policy<bool>::~small_any_policy()
+000000000001a270 W cvflann::anyimpl::small_any_policy<bool>::~small_any_policy()
+000000000001a270 W cvflann::anyimpl::small_any_policy<bool>::~small_any_policy()
+000000000001a330 W cvflann::anyimpl::small_any_policy<float>::static_delete(void**)
+000000000001a340 W cvflann::anyimpl::small_any_policy<float>::copy_from_value(void const*, void**)
+000000000001a360 W cvflann::anyimpl::small_any_policy<float>::move(void* const*, void**)
+000000000001a350 W cvflann::anyimpl::small_any_policy<float>::clone(void* const*, void**)
+000000000001a800 W cvflann::anyimpl::small_any_policy<float>::print(std::ostream&, void* const*)
+000000000001a380 W cvflann::anyimpl::small_any_policy<float>::get_value(void* const*)
+000000000001a370 W cvflann::anyimpl::small_any_policy<float>::get_value(void**)
+000000000001a670 W cvflann::anyimpl::small_any_policy<float>::~small_any_policy()
+000000000001a260 W cvflann::anyimpl::small_any_policy<float>::~small_any_policy()
+000000000001a260 W cvflann::anyimpl::small_any_policy<float>::~small_any_policy()
+000000000001a3b0 W cvflann::anyimpl::small_any_policy<int>::static_delete(void**)
+000000000001a3c0 W cvflann::anyimpl::small_any_policy<int>::copy_from_value(void const*, void**)
+000000000001a3e0 W cvflann::anyimpl::small_any_policy<int>::move(void* const*, void**)
+000000000001a3d0 W cvflann::anyimpl::small_any_policy<int>::clone(void* const*, void**)
+000000000001a870 W cvflann::anyimpl::small_any_policy<int>::print(std::ostream&, void* const*)
+000000000001a400 W cvflann::anyimpl::small_any_policy<int>::get_value(void* const*)
+000000000001a3f0 W cvflann::anyimpl::small_any_policy<int>::get_value(void**)
+000000000001a660 W cvflann::anyimpl::small_any_policy<int>::~small_any_policy()
+000000000001a250 W cvflann::anyimpl::small_any_policy<int>::~small_any_policy()
+000000000001a250 W cvflann::anyimpl::small_any_policy<int>::~small_any_policy()
+000000000001a430 W cvflann::anyimpl::small_any_policy<char const*>::static_delete(void**)
+000000000001a440 W cvflann::anyimpl::small_any_policy<char const*>::copy_from_value(void const*, void**)
+000000000001a460 W cvflann::anyimpl::small_any_policy<char const*>::move(void* const*, void**)
+000000000001a450 W cvflann::anyimpl::small_any_policy<char const*>::clone(void* const*, void**)
+000000000001a900 W cvflann::anyimpl::small_any_policy<char const*>::print(std::ostream&, void* const*)
+000000000001a480 W cvflann::anyimpl::small_any_policy<char const*>::get_value(void* const*)
+000000000001a470 W cvflann::anyimpl::small_any_policy<char const*>::get_value(void**)
+000000000001a650 W cvflann::anyimpl::small_any_policy<char const*>::~small_any_policy()
+000000000001a240 W cvflann::anyimpl::small_any_policy<char const*>::~small_any_policy()
+000000000001a240 W cvflann::anyimpl::small_any_policy<char const*>::~small_any_policy()
+000000000001a320 W cvflann::anyimpl::typed_base_any_policy<bool>::type()
+000000000001a310 W cvflann::anyimpl::typed_base_any_policy<bool>::get_size()
+000000000001a3a0 W cvflann::anyimpl::typed_base_any_policy<float>::type()
+000000000001a390 W cvflann::anyimpl::typed_base_any_policy<float>::get_size()
+000000000001a420 W cvflann::anyimpl::typed_base_any_policy<int>::type()
+000000000001a410 W cvflann::anyimpl::typed_base_any_policy<int>::get_size()
+000000000001a4f0 W cvflann::anyimpl::typed_base_any_policy<cvflann::anyimpl::empty_any>::type()
+000000000001a4e0 W cvflann::anyimpl::typed_base_any_policy<cvflann::anyimpl::empty_any>::get_size()
+000000000001a580 W cvflann::anyimpl::typed_base_any_policy<cvflann::flann_algorithm_t>::type()
+000000000001a570 W cvflann::anyimpl::typed_base_any_policy<cvflann::flann_algorithm_t>::get_size()
+000000000001a5d0 W cvflann::anyimpl::typed_base_any_policy<cvflann::flann_centers_init_t>::type()
+000000000001a5c0 W cvflann::anyimpl::typed_base_any_policy<cvflann::flann_centers_init_t>::get_size()
+000000000001a530 W cvflann::anyimpl::typed_base_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::type()
+000000000001a520 W cvflann::anyimpl::typed_base_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::get_size()
+000000000001a4a0 W cvflann::anyimpl::typed_base_any_policy<char const*>::type()
+000000000001a490 W cvflann::anyimpl::typed_base_any_policy<char const*>::get_size()
+                 U operator new[](unsigned long)@@GLIBCXX_3.4
+                 U cv::DescriptorMatcher::match(cv::_InputArray const&, cv::_InputArray const&, std::vector<cv::DMatch, std::allocator<cv::DMatch> >&, cv::_InputArray const&) const
+                 U cv::Mat::clone() const
+                 U cv::Mat::empty() const
+                 U cv::Mat::total() const
+                 U cv::Mat::reshape(int, int, int const*) const
+                 U cv::Mat::convertTo(cv::_OutputArray const&, int, double, double) const
+                 U std::runtime_error::what() const@@GLIBCXX_3.4
+                 U std::ctype<char>::_M_widen_init() const@@GLIBCXX_3.4.11
+00000000000105d0 W std::ctype<char>::do_widen(char) const
+                 U std::ostream::put(char)@@GLIBCXX_3.4
+                 U std::ostream::flush()@@GLIBCXX_3.4
+                 U std::ostream& std::ostream::_M_insert<bool>(bool)@@GLIBCXX_3.4.9
+                 U std::ostream& std::ostream::_M_insert<double>(double)@@GLIBCXX_3.4.9
+                 U std::ostream::operator<<(int)@@GLIBCXX_3.4
+                 U std::__basic_file<char>::~__basic_file()@@GLIBCXX_3.4
+                 U std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode)@@GLIBCXX_3.4
+                 U std::basic_filebuf<char, std::char_traits<char> >::close()@@GLIBCXX_3.4
+                 U std::basic_filebuf<char, std::char_traits<char> >::basic_filebuf()@@GLIBCXX_3.4
+                 U std::basic_filebuf<char, std::char_traits<char> >::~basic_filebuf()@@GLIBCXX_3.4
+                 U std::runtime_error::runtime_error(char const*)@@GLIBCXX_3.4.21
+                 U std::runtime_error::runtime_error(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@@GLIBCXX_3.4.21
+                 U std::runtime_error::~runtime_error()@@GLIBCXX_3.4
+                 U std::runtime_error::~runtime_error()@@GLIBCXX_3.4
+                 U std::basic_ifstream<char, std::char_traits<char> >::~basic_ifstream()@@GLIBCXX_3.4
+                 U std::basic_ofstream<char, std::char_traits<char> >::~basic_ofstream()@@GLIBCXX_3.4
+0000000000021910 W std::_Sp_counted_ptr<decltype(nullptr), (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+                 U std::invalid_argument::invalid_argument(char const*)@@GLIBCXX_3.4.21
+                 U std::invalid_argument::~invalid_argument()@@GLIBCXX_3.4
+0000000000021920 W std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_destroy()
+000000000001ab50 W std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+                 U std::locale::locale()@@GLIBCXX_3.4
+                 U std::locale::~locale()@@GLIBCXX_3.4
+000000000001abc0 W void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
+0000000000010600 W void std::vector<float, std::allocator<float> >::_M_realloc_insert<float>(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, float&&)
+000000000001afa0 W void std::vector<int, std::allocator<int> >::_M_realloc_insert<int>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int&&)
+00000000000105e0 W std::vector<int, std::allocator<int> >::~vector()
+00000000000105e0 W std::vector<int, std::allocator<int> >::~vector()
+000000000001acf0 W void std::vector<cv::Mat, std::allocator<cv::Mat> >::_M_realloc_insert<cv::Mat const&>(__gnu_cxx::__normal_iterator<cv::Mat*, std::vector<cv::Mat, std::allocator<cv::Mat> > >, cv::Mat const&)
+0000000000014180 W void std::vector<cv::Mat, std::allocator<cv::Mat> >::_M_realloc_insert<cv::Mat>(__gnu_cxx::__normal_iterator<cv::Mat*, std::vector<cv::Mat, std::allocator<cv::Mat> > >, cv::Mat&&)
+0000000000013f50 W std::vector<cv::Mat, std::allocator<cv::Mat> >::~vector()
+0000000000013f50 W std::vector<cv::Mat, std::allocator<cv::Mat> >::~vector()
+0000000000013fd0 W void std::vector<cv::Point_<int>, std::allocator<cv::Point_<int> > >::_M_realloc_insert<cv::Point_<int> >(__gnu_cxx::__normal_iterator<cv::Point_<int>*, std::vector<cv::Point_<int>, std::allocator<cv::Point_<int> > > >, cv::Point_<int>&&)
+0000000000020a10 W std::vector<lsl::stream_info, std::allocator<lsl::stream_info> >::~vector()
+0000000000020a10 W std::vector<lsl::stream_info, std::allocator<lsl::stream_info> >::~vector()
+                 U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct(unsigned long, char)@@GLIBCXX_3.4.21
+                 U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long)@@GLIBCXX_3.4.21
+                 U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@@GLIBCXX_3.4.21
+                 U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long)@@GLIBCXX_3.4.21
+000000000000cf10 t std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) [clone .isra.34]
+000000000000ce50 t std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) [clone .isra.79]
+                 U std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::_M_sync(char*, unsigned long, unsigned long)@@GLIBCXX_3.4.21
+                 U std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_stringstream()@@GLIBCXX_3.4.21
+                 U std::ios_base::Init::Init()@@GLIBCXX_3.4
+                 U std::ios_base::Init::~Init()@@GLIBCXX_3.4
+                 U std::ios_base::ios_base()@@GLIBCXX_3.4
+                 U std::ios_base::~ios_base()@@GLIBCXX_3.4
+                 U std::basic_ios<char, std::char_traits<char> >::init(std::basic_streambuf<char, std::char_traits<char> >*)@@GLIBCXX_3.4
+                 U std::basic_ios<char, std::char_traits<char> >::clear(std::_Ios_Iostate)@@GLIBCXX_3.4
+                 U operator new(unsigned long)@@GLIBCXX_3.4
+                 U std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)@@GLIBCXX_3.4.9
+                 U std::__throw_bad_cast()@@GLIBCXX_3.4
+                 U std::__throw_bad_alloc()@@GLIBCXX_3.4
+                 U std::__throw_logic_error(char const*)@@GLIBCXX_3.4
+                 U std::__throw_length_error(char const*)@@GLIBCXX_3.4
+                 U std::cout@@GLIBCXX_3.4
+                 U std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)@@GLIBCXX_3.4
+                 U std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char)@@GLIBCXX_3.4.21
+000000000002aa82 b std::__ioinit
+000000000002ab0a b std::__ioinit
+000000000002a861 b std::__ioinit
+000000000002aa80 b std::__ioinit
+000000000002aa81 b std::__ioinit
+000000000002ab09 b std::__ioinit
+000000000002ab0b b std::__ioinit
+                 U typeinfo for bool@@CXXABI_1.3
+                 U typeinfo for float@@CXXABI_1.3
+                 U typeinfo for int@@CXXABI_1.3
+0000000000029ab8 V typeinfo for lsl::timeout_error
+00000000000295b8 V typeinfo for cvflann::flann_algorithm_t
+00000000000295c8 V typeinfo for cvflann::flann_centers_init_t
+0000000000029690 V typeinfo for cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>
+0000000000029630 V typeinfo for cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>
+0000000000029600 V typeinfo for cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>
+0000000000029660 V typeinfo for cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+00000000000295d8 V typeinfo for cvflann::anyimpl::base_any_policy
+0000000000029760 V typeinfo for cvflann::anyimpl::small_any_policy<bool>
+0000000000029730 V typeinfo for cvflann::anyimpl::small_any_policy<float>
+0000000000029700 V typeinfo for cvflann::anyimpl::small_any_policy<int>
+00000000000296d0 V typeinfo for cvflann::anyimpl::small_any_policy<char const*>
+0000000000029748 V typeinfo for cvflann::anyimpl::typed_base_any_policy<bool>
+0000000000029718 V typeinfo for cvflann::anyimpl::typed_base_any_policy<float>
+00000000000296e8 V typeinfo for cvflann::anyimpl::typed_base_any_policy<int>
+0000000000029678 V typeinfo for cvflann::anyimpl::typed_base_any_policy<cvflann::anyimpl::empty_any>
+0000000000029618 V typeinfo for cvflann::anyimpl::typed_base_any_policy<cvflann::flann_algorithm_t>
+00000000000295e8 V typeinfo for cvflann::anyimpl::typed_base_any_policy<cvflann::flann_centers_init_t>
+0000000000029648 V typeinfo for cvflann::anyimpl::typed_base_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+00000000000296b8 V typeinfo for cvflann::anyimpl::typed_base_any_policy<char const*>
+00000000000296a8 V typeinfo for cvflann::anyimpl::empty_any
+00000000000295a8 V typeinfo for std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+                 U typeinfo for char const*@@CXXABI_1.3
+                 U typeinfo for std::runtime_error@@GLIBCXX_3.4
+                 U typeinfo for std::invalid_argument@@GLIBCXX_3.4
+0000000000023e30 V typeinfo name for lsl::timeout_error
+00000000000237c0 V typeinfo name for cvflann::flann_algorithm_t
+00000000000237e0 V typeinfo name for cvflann::flann_centers_init_t
+0000000000023aa0 V typeinfo name for cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>
+0000000000023960 V typeinfo name for cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>
+00000000000238c0 V typeinfo name for cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>
+0000000000023a00 V typeinfo name for cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+0000000000023820 V typeinfo name for cvflann::anyimpl::base_any_policy
+0000000000023cc0 V typeinfo name for cvflann::anyimpl::small_any_policy<bool>
+0000000000023c40 V typeinfo name for cvflann::anyimpl::small_any_policy<float>
+0000000000023bc0 V typeinfo name for cvflann::anyimpl::small_any_policy<int>
+0000000000023b40 V typeinfo name for cvflann::anyimpl::small_any_policy<char const*>
+0000000000023c80 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<bool>
+0000000000023c00 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<float>
+0000000000023b80 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<int>
+0000000000023a60 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<cvflann::anyimpl::empty_any>
+0000000000023900 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<cvflann::flann_algorithm_t>
+0000000000023860 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<cvflann::flann_centers_init_t>
+00000000000239a0 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+0000000000023b00 V typeinfo name for cvflann::anyimpl::typed_base_any_policy<char const*>
+0000000000023ae0 V typeinfo name for cvflann::anyimpl::empty_any
+0000000000023780 V typeinfo name for std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+                 U VTT for std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >@@GLIBCXX_3.4.21
+                 U VTT for std::basic_ifstream<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U VTT for std::basic_ofstream<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U vtable for __cxxabiv1::__enum_type_info@@CXXABI_1.3
+                 U vtable for __cxxabiv1::__class_type_info@@CXXABI_1.3
+                 U vtable for __cxxabiv1::__si_class_type_info@@CXXABI_1.3
+                 U vtable for cv::BFMatcher
+0000000000029ad0 V vtable for lsl::timeout_error
+00000000000298b0 V vtable for cvflann::anyimpl::big_any_policy<cvflann::anyimpl::empty_any>
+00000000000297e0 V vtable for cvflann::anyimpl::big_any_policy<cvflann::flann_algorithm_t>
+0000000000029778 V vtable for cvflann::anyimpl::big_any_policy<cvflann::flann_centers_init_t>
+0000000000029848 V vtable for cvflann::anyimpl::big_any_policy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >
+0000000000029a50 V vtable for cvflann::anyimpl::small_any_policy<bool>
+00000000000299e8 V vtable for cvflann::anyimpl::small_any_policy<float>
+0000000000029980 V vtable for cvflann::anyimpl::small_any_policy<int>
+0000000000029918 V vtable for cvflann::anyimpl::small_any_policy<char const*>
+                 U vtable for std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >@@GLIBCXX_3.4.21
+                 U vtable for std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >@@GLIBCXX_3.4.21
+                 U vtable for std::basic_filebuf<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U vtable for std::basic_ifstream<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U vtable for std::basic_ofstream<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U vtable for std::basic_streambuf<char, std::char_traits<char> >@@GLIBCXX_3.4
+                 U vtable for std::basic_ios<char, std::char_traits<char> >@@GLIBCXX_3.4
+000000000002a800 d eegimage(double, double)::idx
+000000000002a9c0 b eegimage(double, double)::pt1
+000000000002a9b0 b eegimage(double, double)::pt2
+000000000002a9e0 b eegimage(double, double)::color
+000000000002aa20 b eegimage(double, double)::image
+0000000000024060 r cv::MatConstIterator::MatConstIterator(cv::Mat const*)::__func__
+0000000000023770 r cv::Mat::push_back<int>(int const&)::__func__
+0000000000024050 r cv::Mat_<float>::operator=(cv::Mat const&)::__func__
+000000000002ab08 u kfr::internal_generic::init_dummyvar()::dummy
+000000000002a858 u kfr::internal_generic::cpu_v()::v1
+000000000002aae0 u cometa::details::get_memory_statistics()::ms

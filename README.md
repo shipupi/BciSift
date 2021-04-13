@@ -15,6 +15,10 @@ sudo apt install libgtk2.0-dev pkg-config libcanberra-gtk-module libcanberra-gtk
 
 - VLFeat. Clone from https://github.com/faturita/vlfeat and add the path to cmake/FindVLFeat.cmake
 
+- Tensorflow:
+    1. Install Bazel: https://docs.bazel.build/versions/4.0.0/install-ubuntu.html
+    2. 
+
 I've run thesse commands using linux, Cmake however is supposed to be portable (at least in windows and linux), but I have not tried it on another platform yet.
 
 For MAC installation, check the original repository on https://github.com/faturita/BciSift 

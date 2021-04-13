@@ -197,7 +197,7 @@ result sift(cv::Mat image, const int imageheight, const int imagewidth, int edge
     **/
 
     //(int nfeatures=0, int nOctaveLayers=3, double contrastThreshold=0.04, double edgeThreshold=10, double sigma=1.6)
-    cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0,70,0.04,2,1.6);
+    cv::Ptr<cv::xfeatures2d::SIFT> detector = cv::xfeatures2d::SIFT::create(0,70,0.04,2,1.6);
 
     detector->detect( image, keypoints);
 
